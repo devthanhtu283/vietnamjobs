@@ -1,0 +1,390 @@
+<html
+  th:replace="~{layout/company :: renderBody('VietnamJobs - Postings', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Posting</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>New recruitment information</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/admin/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Recruitment Posts</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <form th:action="@{/employer/posting/add}" method="post">
+          <div class="form-group col-md-10">
+            <label>Title</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Your Jobs"
+              th:field="${postingDTO.title}"
+              required
+              minlength="10"
+            />
+          </div>
+
+          <div class="form-row col-md-10">
+            <div class="form-group col-md-5">
+              <label>Deadline</label>
+              <input
+                type="text"
+                class="form-control"
+                id="deadline"
+                placeholder="Deadline"
+                th:name="deadlineString"
+                required
+              />
+            </div>
+            <div class="form-group col-md-7">
+              <label for="alternate">&nbsp;</label>
+              <input
+                type="text"
+                class="form-control"
+                id="alternate"
+                placeholder="Deadline"
+              />
+            </div>
+          </div>
+
+          <div class="form-row col-md-10">
+            <div class="form-group col-md-4">
+              <label for="inputCity">Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                id="inputCity"
+                th:field="${postingDTO.quantity}"
+                required
+                min="1"
+                pattern="[+]?[0-9]"
+              />
+            </div>
+            <div class="form-group col-md-2"></div>
+            <div class="form-group col-md-3">
+              <label for="inputGender">Gender</label>
+              <select
+                id="inputGender"
+                class="form-control"
+                th:name="inputGender"
+                required
+              >
+                <option value="">Choose...</option>
+                <option th:value="Male">Male</option>
+                <option th:value="Female">Female</option>
+                <option th:value="0">Other</option>
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="">&nbsp;</label>
+              <input
+                type="text"
+                class="form-control"
+                id="othergender"
+                th:name="gender"
+                disabled="true"
+                placeholder="Confirm your gender request"
+              />
+              <input
+                type="hidden"
+                th:name="gender"
+                th:value="none"
+                id="othergenderhidden"
+              />
+            </div>
+          </div>
+
+          <div class="form-row col-md-10">
+            <div class="form-group col-md-4">
+              <label for="inputWage">Wage</label>
+              <select
+                id="inputWage"
+                class="form-control"
+                th:name="inputWage"
+                required
+              >
+                <option value="" selected>Choose...</option>
+                <option
+                  th:each="wage : ${@wageService.findAll}"
+                  th:value="${wage.name}"
+                  th:text="${wage.name}"
+                ></option>
+                <option th:value="0">Other</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="">MinWage</label>
+              <input
+                type="text"
+                class="form-control"
+                id="otherminWage"
+                th:name="minWage"
+                disabled="true"
+                placeholder="Confirm your minWage request "
+              />
+              <input
+                type="hidden"
+                th:name="minWage"
+                th:value="none"
+                id="minWagehidden"
+              />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="">MaxWage</label>
+              <input
+                type="text"
+                class="form-control"
+                id="othermaxWage"
+                th:name="maxWage"
+                disabled="true"
+                placeholder="Confirm your maxWage request"
+              />
+              <input
+                type="hidden"
+                th:name="maxWage"
+                th:value="none"
+                id="maxWagehidden"
+              />
+            </div>
+          </div>
+          <div class="form-group col-md-10">
+            <label>Category</label>
+            <select
+              id="inputCategory"
+              class="form-control"
+              th:field="${postingDTO.categoryName}"
+              required
+            >
+              <option value="" selected>Choose...</option>
+              <option
+                th:each="category : ${@categoryService.getAll()}"
+                th:value="${category.name}"
+                th:text="${category.name}"
+              ></option>
+            </select>
+          </div>
+          <div class="form-group col-md-10">
+            <label>Local</label>
+            <select
+              id="inputLocal"
+              class="form-control"
+              th:field="${postingDTO.localName}"
+              required
+            >
+              <option value="" selected>Choose...</option>
+              <option
+                th:each="local : ${@localService.findAll()}"
+                th:value="${local.name}"
+                th:text="${local.name}"
+              ></option>
+            </select>
+          </div>
+          <div class="form-group col-md-10">
+            <label>Rank</label>
+            <select
+              id="inputRank"
+              class="form-control"
+              th:field="${postingDTO.rankName}"
+              required
+            >
+              <option value="" selected>Choose...</option>
+              <option
+                th:each="rank : ${@rankService.findAll()}"
+                th:value="${rank.name}"
+                th:text="${rank.name}"
+              ></option>
+            </select>
+          </div>
+          <div class="form-group col-md-10">
+            <label>Type</label>
+            <select
+              id="inputType"
+              class="form-control"
+              th:field="${postingDTO.typeName}"
+              required
+            >
+              <option value="" selected>Choose...</option>
+              <option
+                th:each="type : ${@typeService.findAll()}"
+                th:value="${type.name}"
+                th:text="${type.name}"
+              ></option>
+            </select>
+          </div>
+          <div class="form-row col-md-10">
+            <div class="form-group col-md-4">
+              <label for="inputExp">Exp</label>
+              <select
+                id="inputExp"
+                class="form-control"
+                th:name="experience"
+                required
+              >
+                <option value="" selected>Choose...</option>
+                <option
+                  th:each="exp : ${@experienceService.findAll}"
+                  th:value="${exp.name}"
+                  th:text="${exp.name}"
+                ></option>
+                <option th:value="0">Other</option>
+              </select>
+            </div>
+            <div class="form-group col-md-8">
+              <label for="">&nbsp;</label>
+              <input
+                type="text"
+                class="form-control"
+                id="otherexperience"
+                th:name="otherexperience"
+                disabled="true"
+                placeholder="Confirm your experience request"
+              />
+              <input
+                type="hidden"
+                th:name="otherexperience"
+                th:value="none"
+                id="otherexperiencehidden"
+              />
+            </div>
+          </div>
+          <div class="form-group col-md-10">
+            <label for="exampleFormControlTextarea1">Description</label>
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="5"
+              th:field="${postingDTO.description}"
+              required
+            ></textarea>
+          </div>
+
+          <div class="col-md-10">
+            <div style="text-align: center">
+              <button
+                type="submit"
+                class="codepro-custom-btn codepro-btn-7"
+                target="blank"
+                title="Code Pro"
+              >
+                <span>Posting Now</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <footer class="main-footer">
+        <strong
+          >Copyright &copy; 2024-2025
+          <a href="https://google.com">Google</a>.</strong
+        >
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 1.1.0
+        </div>
+      </footer>
+
+      <script>
+        $(function () {
+          $("#deadline").datepicker({
+            dateFormat: "dd/mm/yy",
+            altField: "#alternate",
+            altFormat: "DD, d MM, yy",
+          });
+        });
+        CKEDITOR.replace("exampleFormControlTextarea1");
+        $(document).ready(function () {
+          $("#inputGender").change(function () {
+            var selected = $(this).val();
+            if (selected == 0) {
+              document.getElementById("othergender").disabled = false;
+              document.getElementById("othergenderhidden").disabled = true;
+            } else {
+              document.getElementById("othergender").disabled = true;
+              document.getElementById("othergenderhidden").disabled = false;
+            }
+          });
+          $("#inputWage").change(function () {
+            var selected = $(this).val();
+            if (selected == 0) {
+              document.getElementById("otherminWage").disabled = false;
+              document.getElementById("othermaxWage").disabled = false;
+              document.getElementById("minWagehidden").disabled = true;
+              document.getElementById("maxWagehidden").disabled = true;
+            } else {
+              document.getElementById("otherminWage").disabled = true;
+              document.getElementById("othermaxWage").disabled = true;
+              document.getElementById("minWagehidden").disabled = false;
+              document.getElementById("maxWagehidden").disabled = false;
+            }
+          });
+          $("#inputExp").change(function () {
+            var selected = $(this).val();
+            if (selected == 0) {
+              document.getElementById("otherexperience").disabled = false;
+              document.getElementById("otherexperiencehidden").disabled = true;
+            } else {
+              document.getElementById("otherexperience").disabled = true;
+              document.getElementById("otherexperiencehidden").disabled = false;
+            }
+          });
+        });
+      </script>
+      <script th:if="${success != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Process information successfully!",
+          });
+        });
+      </script>
+      <script th:if="${error != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Something went wrong! Try later...",
+          });
+        });
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </div>
+  </body>
+</html>

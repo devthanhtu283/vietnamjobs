@@ -1,0 +1,157 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{user/layout/userlayout :: userlayout('Company Details', ~{this :: h2}, ~{this :: .contentData})}">
+<head>
+	<title>Index</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/user/css/style.css}">
+</head>
+<body>
+
+	<h2>Employer detail: <th:block th:text="${company.name}"></th:block></h2>
+
+    <div class="contentData">
+        <section>
+            <div class="row" style="margin-bottom: 24px;">
+                <div class="col-lg-12">
+                    <div class="card" style="margin-bottom: 0; border: 1px solid rgb(160, 193, 255); border-radius: 12px; background: linear-gradient(90deg, #212f3f, #00b14f);">
+                        <div style="height: 200px; overflow: hidden; border-top-left-radius: 12px; border-top-right-radius: 12px">
+                            <img th:src="@{'http://localhost:8087/files/' + ${company.cover}}" height="100%" style="object-fit: cover; object-position: center; width: 100%;">
+                        </div>
+                        <div class="company-logo" style="position: relative;">
+                            <div class="company-image-logo" style="align-items: center; background: #fff; border: 4.5px solid #fff; border-radius: 99px; display: flex; height: 180px; justify-content: center; left: 40px; overflow: hidden; position: absolute; top: -90px; width: 180px;">
+                                <img th:src="@{'http://localhost:8087/files/' + ${company.logo}}" width="180" height="180">
+                            </div>
+                        </div>
+                        <div style="padding-left: 252px; padding-right: 40px; align-items: center; display: flex;">
+                            <div>
+                                <div style="margin-bottom: 30px; margin-top: 30px;">
+                                    <div style="margin-bottom: 16px; font-size: 20px; font-weight: 600; line-height: 28px; color: #fff;">
+										<th:block th:text="${company.name}"></th:block>
+									</div>
+                                    <div style="display: flex; column-gap: 20px; align-items: center; flex-wrap: wrap;">
+                                        <div style="color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 50%;">
+                                            <i data-feather="globe" style="width: 16px; height: 16px; margin-right: 16px;"></i>
+                                            <th:block th:text="${company.link}"></th:block>
+                                        </div>
+                                        <div style="color: #fff;">
+                                            <i data-feather="home" style="width: 16px; height: 16px; margin-right: 16px;"></i>
+                                            <th:block th:text="${company.scale}"></th:block>
+                                        </div>
+                                        <div style="color: #fff;">
+                                            <i data-feather="users" style="width: 16px; height: 16px; margin-right: 16px;"></i>
+                                          <th:block th:text="${follows}"></th:block> followers
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div>
+                                <div style="align-items: center; justify-content: center; text-align: center; width: 140px;">
+                                    <button type="button" class="btn btn-outline-primary" style="background-color: white; padding-left: 12px; padding-right: 12px; font-size: 18px;">
+                                        <i data-feather="plus" style="margin-right: 5px; width: 16px; height: 16px;"></i>
+                                        Theo dõi
+                                    </button>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header text-white" style="background: linear-gradient(90deg, #1c4742, #22c96d); font-size: 18px; font-weight: 600; line-height: 26px;">
+                            Employer description
+                        </div>
+                        <div style="padding: 20px 20px 28px;">
+                            <div style="max-height: 200px; overflow: hidden;">
+                                <th:block th:text="${company.description}"></th:block>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header text-white" style="background: linear-gradient(90deg, #1c4742, #22c96d); font-size: 18px; font-weight: 600; line-height: 26px;">
+                            Recruitment
+                        </div>
+                        <div class="card-body">
+                            <!-- <div class="row" style="padding: 20px 0 16px;">
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="question" placeholder="Tên công việc, vị trí ứng tuyển" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-success" style="font-size: 16px;">
+                                        <i data-feather="search" style="margin-right: 5px; width: 16px; height: 16px;"></i>
+                                        Tìm kiếm
+                                    </button>
+                                </div>
+                            </div> -->
+                            <div class="row" style="margin-top: 16px;">
+                                <div class="col-lg-12" style="margin-bottom: 10px;">
+                                    <div 
+                                    	class="card" 
+                                    	style="margin-bottom: 0; border: 1px solid rgb(160, 193, 255); border-radius: 12px; background-color: #f2fcf6; margin-bottom: 16px;"
+                                    	th:each="posting : ${postings}"
+                                    >
+                                        <div class="card-body" style="padding-top: 10px; padding-bottom: 10px;">
+                                            <div class="row">
+                                                <div class="col-lg-2" style="display: flex; align-items: center; justify-content: center; padding: 0px;">
+                                                    <img src="https://images.vietnamworks.com/logo/VIPlogoVin_126212.jpg" width="100" style="border: 1px solid rgb(241, 241, 241); border-radius: 12px;">
+                                                </div>
+                                                <div class="col-lg-10">
+                                                    <div style="margin-bottom: 0; text-align: left; font-size: large;">
+														<a th:href="@{'/home/posting/' + ${posting.id}}" style="color: #000;">
+															<b><th:block th:text="${posting.title}"></th:block></b>
+														</a>
+													</div>
+                                                    <div style="text-align: left;">
+														<th:block th:text="${company.name}"></th:block>
+													</div>
+                                                    <div style="text-align: left;">
+                                                        <span class="text-warning">
+															<th:block th:text="${posting.wageName}"></th:block>
+														</span> | 
+														<th:block th:text="${posting.localName}"></th:block>
+                                                    </div>
+                                                    <div style="text-align: left;"><th:block th:text="${#dates.format(posting.dealine, 'dd/MM/yyyy')}"></th:block> | 
+														<span class="badge badge-light-secondary">
+															<th:block th:text="${posting.categoryName}"></th:block>
+														</span> 
+														<!--/* <span class="badge badge-light-secondary">Human Resources</span> 
+														<span class="badge badge-light-secondary">Bảo Hiểm Xã Hội</span> 
+														<span class="badge badge-light-secondary">+2</span> */-->
+													</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header text-white" style="background: linear-gradient(90deg, #1c4742, #22c96d); font-size: 18px; font-weight: 600; line-height: 26px;">
+                            Contact info
+                        </div>
+                        <div class="card-body">
+                            <div style="padding-top: 20px;">
+                                <div style="font-size: 14px; font-weight: 500; line-height: 20px;"><i data-feather="map-pin" style="margin-right: 8px; color: #00b14f;"></i>Employer address</div>
+                                <div>
+									<th:block th:text="${company.address}"></th:block>
+								</div>
+
+                            </div>
+                            <div style="font-size: 14px; font-weight: 500; line-height: 20px; margin-bottom: 16px; margin-top: 16px;">
+								<a th:href="${company.mapLink}" target="_blank" style="color: #000;">
+									<i data-feather="map" style="margin-right: 8px; color: #00b14f;"></i>View on map
+								</a>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

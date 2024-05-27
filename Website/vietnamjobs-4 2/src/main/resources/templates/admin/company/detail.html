@@ -1,0 +1,154 @@
+<html
+  th:replace="~{layout/admin :: renderBody('VietnamJobs - Company Detail', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Company Detail</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper" style="min-height: 1000px">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Company Detail</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/admin/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a th:href="@{/admin/company}">Company</a>
+                </li>
+                <li class="breadcrumb-item active">Company Detail</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-4">
+              <!-- About Me Box -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title font-weight-bold">Introduce</h3>
+                </div>
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    <img
+                      class="w-50 h-50 profile-user-img img-fluid img-circle"
+                      style="object-fit: contain"
+                      th:src="@{'http://localhost:8087/files/'+ ${item.logo}}"
+                      th:if="${item.logo.length() > 0}"
+                    />
+                    <img
+                      class="w-50 h-50 profile-user-img img-fluid img-circle"
+                      style="object-fit: contain"
+                      th:src="@{/assets/images/no-img.png}"
+                      width="60"
+                      th:if="${item.logo.length()<= 0}"
+                    />
+                  </div>
+                  <h3
+                    class="profile-username text-center"
+                    th:text="${item.name}"
+                  ></h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body pt-0">
+                  <strong><i class="fas fa-building"></i> Scale</strong>
+                  <p class="text-muted" th:text="${item.scale}"></p>
+                  <hr />
+
+                  <strong><i class="fas fa-users"></i> Followers</strong>
+                  <p class="text-muted" th:text="${totalFollow}"></p>
+
+                  <hr />
+
+                  <strong
+                    ><i class="fas fa-newspaper"></i> Recruitment Posts</strong
+                  >
+                  <p class="text-muted" th:text="${totalJob}"></p>
+
+                  <hr />
+
+                  <strong><i class="fas fa-map-marker-alt"></i> Address</strong>
+                  <p class="text-muted" th:text="${item.address}"></p>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title font-weight-bold">Details</h3>
+                  <div class="card-tools">
+                    <button
+                      type="button"
+                      class="btn btn-tool mt-0"
+                      data-card-widget="collapse"
+                      title="Collapse"
+                    >
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p>
+                    <strong>Company name:</strong>
+                    <span th:text="${item.name}"></span>
+                  </p>
+                  <p>
+                    <strong>Scale:</strong>
+                    <span th:text="${item.scale}"></span>
+                  </p>
+                  <p>
+                    <strong>Address:</strong>
+                    <span th:text="${item.address}"></span>
+                  </p>
+                  <p>
+                    <strong>Followers:</strong>
+                    <span th:text="${totalFollow}"></span>
+                  </p>
+                  <p>
+                    <strong>Recruitment Posts:</strong>
+                    <span th:text="${totalJob}"></span>
+                  </p>
+                  <p><strong>Introduce Company:</strong></p>
+                  <p th:text="${item.description}"></p>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <a
+                    th:href="@{'/admin/job/' + ${item.id}}"
+                    class="btn btn-outline-success d-inline-flex align-items-center"
+                    ><i class="fas fa-list-ul mr-2"></i>Recruitment Posts
+                    List</a
+                  >
+                </div>
+                <!-- /.card-footer-->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
+
+      <!-- Page specific script -->
+    </div>
+  </body>
+</html>

@@ -1,0 +1,221 @@
+<html th:replace="~{layout/admin :: renderBody('VietnamJobs - Recruitment Posts Detail', ~{this::.content-wrapper})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>VietnamJobs - Recruitment Posts Detail</title>
+</head>
+
+<body>
+<div class="content-wrapper" style="min-height: 2000px;">
+    <!-- Breadcrumb -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Recruitment Posts Detail</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/admin/job}">Recruitment Posts</a></li>
+                        <li class="breadcrumb-item active">Recruitment Posts Detail</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title font-weight-bold">Summary</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool mt-0" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+                                <img height="150" style="object-fit: contain;"
+                                     th:src="@{'http://localhost:8087/files/'+ ${item.employer.logo}}" width="150" th:if="${item.employer.logo.length() > 0}">
+                                <img height="150" style="object-fit: contain;"
+                                     th:src="@{/assets/images/no-img.png}" width="150" th:if="${item.employer.logo.length()<= 0}">
+                            </div>
+                            <p class="pt-4"><strong>Company:</strong> <span th:text="${item.employer.name}"></span></p>
+                            <p><strong>Date created:</strong> <span
+                                    th:text="${#dates.format(item.created, 'dd/MM/yyyy')}"></span></p>
+                            <p><strong>Deadline:</strong> <span
+                                    th:text="${#dates.format(item.deadline, 'dd/MM/yyyy')}"></span></p>
+                            <p><strong>Gender:</strong> <span th:text="${item.gender}"></span></p>
+                            <p><strong>Quantity:</strong> <span th:text="${item.quantity}"></span></p>
+                            <p><strong>Category:</strong> <span th:text="${item.category.name}"></span></p>
+                            <p><strong>Wage:</strong> <span th:text="${item.wage.name}"></span></p>
+                            <p><strong>Location:</strong> <span th:text="${item.local.name}"></span></p>
+                            <p><strong>Rank:</strong> <span th:text="${item.rank.name}"></span></p>
+                            <p><strong>Experience:</strong> <span th:text="${item.experience.name}"></span></p>
+                            <p><strong>Recruitment Posts:</strong>
+                                <span class="text-success font-weight-bold" th:if="${item.status == true}">
+                                        Opening
+                                    </span>
+                                <span class="text-danger font-weight-bold" th:if="${item.status == false}">
+                                       Closed
+                                    </span></p>
+                            <p><strong>Status:</strong>
+                                <span class="text-success font-weight-bold" th:if="${item.status == true}">
+                                        Accepted
+                                    </span>
+                                <span class="text-danger font-weight-bold" th:if="${item.status == false}">
+                                        Reject
+                                    </span></p>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+                <div class="col-12 col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title font-weight-bold">Details</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool mt-0" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4><strong>Title:</strong> <span th:text="${item.title}"></span></h4>
+                            <h6><strong>Company:</strong> <span th:text="${item.employer.name}"></span></h6>
+                            <div class="row py-4">
+                                <div class="col-12 col-md-6">
+                                    <p><strong>Gender:</strong> <span th:text="${item.gender}"></span></p>
+                                    <p><strong>Quantity:</strong> <span th:text="${item.quantity}"></span></p>
+                                    <p><strong>Category:</strong> <span th:text="${item.category.name}"></span></p>
+                                    <p><strong>Wage:</strong> <span th:text="${item.wage.name}"></span></p>
+                                    <p><strong>Location:</strong> <span th:text="${item.local.name}"></span></p>
+                                    <p><strong>Rank:</strong> <span th:text="${item.rank.name}"></span></p>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <p><strong>Experience:</strong> <span th:text="${item.experience.name}"></span></p>
+                                    <p><strong>Date created:</strong> <span
+                                            th:text="${#dates.format(item.created, 'dd/MM/yyyy')}"></span></p>
+                                    <p><strong>Deadline:</strong> <span
+                                            th:text="${#dates.format(item.deadline, 'dd/MM/yyyy')}"></span></p>
+                                    <p><strong>Recruitment Posts:</strong>
+                                        <span class="text-success font-weight-bold" th:if="${item.status == true}">
+                                        Opening
+                                    </span>
+                                        <span class="text-danger font-weight-bold" th:if="${item.status == false}">
+                                       Closed
+                                    </span></p>
+                                    <p><strong>Status:</strong>
+                                        <span class="text-success font-weight-bold" th:if="${item.status == true}">
+                                        Accepted
+                                    </span>
+                                        <span class="text-danger font-weight-bold" th:if="${item.status == false}">
+                                        Reject
+                                    </span></p>
+                                </div>
+
+                            </div>
+
+                            <h6 class="font-weight-bold mb-3">Details:</h6>
+                            <p th:text="${item.description}"></p>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <form class="mb-0" enctype="multipart/form-data" method="post"
+                                  style="width: 100%; display: flex; align-items: center; align-content: end;"
+                                  th:action="@{'/admin/job/updateStatus/' + ${item.id}+'/'+${true}}">
+                                <button class="d-inline-flex align-items-center btn btn-outline-danger mr-2" th:if="${item.status == true}" type="submit">
+                                    <i class="fas fa-times mr-2"></i> Reject
+                                </button>
+                                <button class="d-inline-flex align-items-center btn btn-outline-success mr-2" th:if="${item.status == false}" type="submit">
+                                    <i class="fas fa-check mr-2"></i> Accept
+                                </button>
+                            </form>
+                        </div>
+                        <!-- /.card-footer-->
+                    </div>
+                    <!-- /.card -->
+
+            </div>
+            </div>
+            </div>
+
+    </section>
+    <!-- /.content -->
+
+    <!-- Page specific script -->
+    <script th:if="${success != null}">
+        $(document).ready(function () {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: "SUCCESS",
+                text: 'Process information successfully!'
+
+            })
+        });
+    </script>
+    <script th:if="${error != null}">
+        $(document).ready(function () {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+
+            Toast.fire({
+                icon: 'error',
+                title: "ERROR",
+                text: 'Something went wrong! Try later...'
+            })
+        });
+    </script>
+    <script th:if="${notFound != null}">
+        $(document).ready(function () {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+
+            Toast.fire({
+                icon: 'warning',
+                title: 'NOT FOUND',
+                text: 'List does not contain this data'
+            })
+        });
+    </script>
+
+</div>
+<!-- /.content-wrapper -->
+
+
+
+
+</div>
+</body>
+</html>

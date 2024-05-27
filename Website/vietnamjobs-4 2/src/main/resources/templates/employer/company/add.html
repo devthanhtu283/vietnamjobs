@@ -1,0 +1,164 @@
+<html
+  th:replace="~{layout/company :: renderBody('VietnamJobs - Add Company', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Add Company</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Add New</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/company}">Company</a>
+                </li>
+                <li class="breadcrumb-item active">Add New</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <form
+                class="card"
+                enctype="multipart/form-data"
+                method="post"
+                th:action="@{/employer/company/handleAdd}"
+              >
+                <div class="card-header">
+                  <h4 class="modal-title">Company Details</h4>
+                </div>
+                <div class="card-body">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Company name</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter name..."
+                        th:field="${newCompany.name}"
+                        type="text"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label
+                        >Scale
+                        <span class="text-secondary"
+                          >(Quantity employee)</span
+                        ></label
+                      >
+                      <input
+                        class="form-control"
+                        placeholder="Enter name Scale..."
+                        th:field="${newCompany.scale}"
+                        type="text"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Address</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter a description..."
+                        th:field="${newCompany.address}"
+                        type="text"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Company link</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter link..."
+                        th:field="${newCompany.link}"
+                        type="text"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Company address link:</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter link..."
+                        th:field="${newCompany.mapLink}"
+                        type="text"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea
+                        class="form-control"
+                        rows="5"
+                        placeholder="Enter a description..."
+                        th:field="${newCompany.description}"
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer justify-content-between">
+                  <button class="btn btn-success" type="submit">
+                    Create new
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page specific script -->
+      <script th:if="${success != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Process information successfully!",
+          });
+        });
+      </script>
+      <script th:if="${error != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Something went wrong! Try later...",
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

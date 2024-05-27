@@ -1,0 +1,97 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{user/layout/userlayout :: userlayout('Profile Page', ~{this :: h2}, ~{this :: .contentData})}">
+<head>
+<title>Index</title>
+</head>
+<body>
+
+	<h2>Profile Page</h2>
+
+    <div class="contentData">
+     <script>
+                  $(document).ready(function(){
+               
+                    $('#account-upload').change( function() {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                    
+                    $("#image").attr('src',tmppath);       
+                });
+                  });
+                </script>
+                
+             <th:block th:if="${success != null}">
+             	<script>
+             		alert('Update successful');
+             	</script>
+             </th:block>
+             <th:block th:if="${error != null}">
+             	<script>
+             		alert('Update failed');
+             	</script>
+             </th:block>
+    	<section>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -.2px; line-height: 28px; margin-bottom: 16px;">
+                                Update profile
+                            </div>
+                            <div>
+                            	 <form  method="post" enctype="multipart/form-data" th:action="@{/seeker/profile/uploadCV}">
+                            	 	<div>
+                                           <div th:text="${seeker.cvInformation}"></div>
+	                                           <a target="_blank" th:href="@{'/files/' + ${seeker.cvInformation}}">
+		                                            <button type="button" class="btn btn-warning me-md-1">
+		                                                View CV
+		                                            </button>
+		                                        </a>
+	                                           <label for="inputField" class="btn btn-info">Upload new CV</label>
+	                                           <input type="file" name="file" id="inputField" style="display:none">
+	                                           <button type="submit" class="btn btn-success me-md-1">Update CV</button>
+                                           </div>
+                            	 </form>
+                                <form class="auth-login-form mt-2" method="post" enctype="multipart/form-data" th:action="@{/seeker/profile/uploadAvatar}">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="d-flex" style="margin-bottom: 16px;">
+                                                <a href="#" class="me-25">
+                                                    <img th:src="@{'/files/' + ${seeker.avatar}}" id="image" class="uploadedAvatar rounded me-50" alt="profile image" height="100" width="100" />
+                                                </a>
+                                                <!-- upload and reset button -->
+                                                <div class="d-flex align-items-end mt-75 ms-1">
+                                                    <div>
+                                                        <label for="account-upload" class="btn btn-sm btn-primary mb-75 me-75">Upload</label>
+                                                        <input type="file" name="file" id="account-upload" hidden accept="image/*" />
+                                                        <button type="button" id="account-reset" class="btn btn-sm btn-outline-secondary mb-75">Reset</button>
+                                                        <p class="mb-0">Allow image type: png, jpg, jpeg.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-md-1">
+                                                <label class="form-label">Fullname</label>
+                                                <input th:value="${seeker.fullName}" type="text" class="form-control" name="fullname" tabindex="1" autofocus />
+                                            </div>
+                                            <div class="mb-md-1">
+                                                <label class="form-label">Phone</label>
+                                                <input th:value="${seeker.phone}" type="text" class="form-control" name="phone" tabindex="1" autofocus />
+                                            </div>
+                                               <button type="submit" class="btn btn-success me-md-1">Update</button>
+                                        </div>
+                                        
+                                    </div>
+                                 
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	
+</body>
+</html>

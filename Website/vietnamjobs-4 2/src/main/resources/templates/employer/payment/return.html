@@ -1,0 +1,74 @@
+<html
+  th:replace="~{layout/company :: renderBody('VietnamJobs - Payment', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Payment</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Payment</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Payment</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card" style="width: 18rem">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100px;
+                    width: 100%;
+                    padding-top: 20px;
+                  "
+                >
+                  <i
+                    class="far fa-check-circle text-success"
+                    style="font-size: 60px"
+                  ></i>
+                </div>
+                <div class="card-body">
+                  <h5
+                    class="card-title font-weight-bold text-center mb-2"
+                    style="width: 100%"
+                  >
+                    Payment success
+                  </h5>
+                  <p class="card-text text-center">
+                    Payment success amount
+                    <strong th:text="${amount}"></strong> at
+                    <strong th:text="${payDate}"></strong>
+                  </p>
+                  <a href="#" class="btn btn-success btn-block">Agree</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page specific script -->
+    </div>
+  </body>
+</html>

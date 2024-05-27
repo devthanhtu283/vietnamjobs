@@ -1,0 +1,270 @@
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="userlayout(title, content, contentData)">
+
+<head>
+	<title th:text="${title}"></title>
+	<link rel="apple-touch-icon" th:href="@{/assets/user/images/ico/apple-icon-120.png}">
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/user/images/ico/favicon.ico}">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+		rel="stylesheet">
+
+	<!-- BEGIN: Vendor CSS-->
+
+	<!-- END: Vendor CSS-->
+
+	<!-- BEGIN: Theme CSS-->
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/user/css/bootstrap.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/user/css/bootstrap-extended.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/user/css/colors.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/user/css/components.css}">
+
+	<!-- BEGIN: Custom CSS-->
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/user/css/style.css}">
+	<!-- END: Custom CSS-->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+
+	<script>
+		$(document).ready(function () {
+
+
+			$('.dropdown-user').on('click', function () {
+				$(this).find('.dropdown-menu').toggleClass('show');
+			});
+		});
+		function notification() {
+			$(document).ready(function () {
+				$.ajax({
+					type: 'GET',
+					url: '/ajaxUser/notification',
+					success: function (maps) {
+						var postings = maps.postings;
+						var count = maps.count;
+						var s = '';
+						s += ' <li class="dropdown-menu-header"><div class="dropdown-header d-flex"><h4 class="notification-title mb-0 me-auto">Thông báo</h4><div class="badge rounded-pill badge-light-primary">100 tin chưa đọc</div></div></li>';
+						for (var i = 0; i < postings.length; i++) {
+
+							s += '<li class="scrollable-container media-list"><a class="d-flex" href="' + postings[i].postingID + '"><div class="list-item d-flex align-items-start"  >';
+							s += '<div class="me-1"><div class="avatar"><img src="https://images.vietnamworks.com/logo/VIPlogoVin_126212.jpg" width="32" height="32"></div></div>';
+							s += '<div class="list-item-body flex-grow-1">';
+							s += '<p class="media-heading">';
+							s += '<span class="fw-bolder">Công ty <span id="employerName">' + postings[i].employerName + '</span></span> đã đăng tải 1 công việc: <span id="postingTitle">' + postings[i].postingTitle + '</span>';
+							s += '</p>';
+							s += '<small class="notification-text">1 ngày trước</small>';
+							s += '</div>';
+							s += '</div></a></li>';
+						}
+						$('#notification').html(s);
+						$('#count').html(count);
+
+					}
+				});
+
+			});
+
+		}
+		setInterval(notification, 3000);
+	</script>
+</head>
+
+<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static" data-open="click"
+	data-menu="vertical-menu-modern" data-col="">
+
+	<!-- BEGIN: Header-->
+	<nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl"
+		style="align-items: center;">
+		<div class="navbar-container d-flex content">
+			<th:block th:replace="${content}"></th:block>
+			<ul class="nav navbar-nav align-items-center ms-auto">
+				<li class="nav-item dropdown dropdown-notification me-25">
+
+					<ul class="dropdown-menu dropdown-menu-media dropdown-menu-end" id="notification">
+						<li class="dropdown-menu-header">
+							<div class="dropdown-header d-flex">
+								<h4 class="notification-title mb-0 me-auto">Notifications</h4>
+								<div class="badge rounded-pill badge-light-primary">0 unread message</div>
+							</div>
+						</li>
+
+					</ul>
+				</li>
+				<th:block sec:authorize="isAuthenticated()">
+					<ul class="nav navbar-nav align-items-center ms-auto">
+					<li class="nav-item dropdown dropdown-notification me-25">
+						<a class="nav-link" href="#" data-bs-toggle="dropdown">
+							<i class="ficon" data-feather="bell"></i>
+							<span class="badge rounded-pill bg-danger badge-up" id="count">0</span>
+						</a>
+	                    <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end" id="notification">
+	                        <li class="dropdown-menu-header">
+	                            <div class="dropdown-header d-flex">
+	                                <h4 class="notification-title mb-0 me-auto">Notifications</h4>
+	                                <div class="badge rounded-pill badge-light-primary">0 unread message</div>
+	                            </div>
+	                        </li>
+	                        <li class="scrollable-container media-list" sec:authorize="isAuthenticated()" th:each="fo : ${@followService.listPostFollowBySeekerID(session.seekerID)}">
+								<a class="d-flex" th:href="@{'/home/posting/' + ${fo.postingID}}">
+	                                <div class="list-item d-flex align-items-start"  >
+	                                    <div class="me-1">
+	                                        <div class="avatar"><img src="https://images.vietnamworks.com/logo/VIPlogoVin_126212.jpg" width="32" height="32"></div>
+	                                    </div>
+	                                    <div class="list-item-body flex-grow-1">
+	                                        <p class="media-heading">
+												<span class="fw-bolder">Employeer <span id="employerName" th:text="${fo.employerName}"></span></span> has upload 1 job: <span id="postingTitle" th:text="${fo.postingTitle}"></span>
+											</p>
+											<small class="notification-text">1 day ago</small>
+	                                    </div>
+	                                </div>
+	                            </a>
+	                        </li>
+	                          
+	                    </ul>
+	                </li>
+	           
+				    <li class="nav-item dropdown dropdown-user">
+						<a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<div class="user-nav d-sm-flex d-none">
+								<span class="user-name fw-bolder">
+									Hi <th:block sec:authentication="name"></th:block>
+								</span>
+							</div>	
+							<span class="avatar">
+								<img class="round" th:src="@{'/assets/images/logo.png'}" height="40" width="40">
+								<span class="avatar-status-online"></span>
+							</span>
+		                </a>
+		                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user" style="width: auto;">
+							<a class="dropdown-item" th:href="@{'/seeker/profile/infor'}"><i class="me-50" data-feather="user"></i>Profile</a>
+							<a class="dropdown-item" th:href="@{'/seeker/profile/employer'}"><i class="me-50" data-feather="users"></i> Employer</a>
+							<a class="dropdown-item" th:href="@{'/seeker/profile/postingapplied'}"><i class="me-50" data-feather="check-square"></i> Job applied</a>
+							<a class="dropdown-item" th:href="@{'/seeker/profile/postingsaved'}"><i class="me-50" data-feather="check-square"></i> Job saved</a>
+							<a class="dropdown-item" th:href="@{'/account/logout'}"><i class="me-50" data-feather="power"></i> Logout</a>
+		                </div>
+		            </li>
+		        </ul>
+				</th:block>
+				<th:block sec:authorize="!isAuthenticated()">
+					<li class="nav-item dropdown dropdown-user">
+						<a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#"
+							data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<div class="user-nav d-sm-flex d-none">
+								<span class="user-name fw-bolder" id="username">
+									Guest
+								</span>
+							</div>
+							<span class="avatar">
+
+								<img class="round" th:src="@{/assets/images/logo.png}" height="40" width="40">
+
+								<span class="avatar-status-online"></span>
+							</span>
+						</a>
+						<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
+
+							<a class="dropdown-item" th:href="@{/account/login}"> <i class="me-50"
+									data-feather="users"></i> Login</a>
+							<a class="dropdown-item" th:href="@{/account/register}"><i class="me-50"
+									data-feather="power"></i> Register</a>
+						</div>
+					</li>
+				</th:block>
+			</ul>
+		</div>
+	</nav>
+	<!-- END: Header-->
+
+
+	<!-- BEGIN: Main Menu-->
+	<div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true" style="top: 0">
+		<div class="navbar-header">
+			<div style="display: flex; margin-top: 1.35rem">
+				<div style="margin-right: 16px;">
+					<img th:src="@{/assets/user/images/flutter_logo.jpg}" style="height: 28px;">
+				</div>
+				<div>
+					<h2 style="color: #22a849;">Vietnamjobs</h2>
+				</div>
+			</div>
+		</div>
+		<div class="shadow-bottom"></div>
+		<div class="main-menu-content">
+			<ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+				<li class=" nav-item"><a class="d-flex align-items-center" th:href="@{'/home/index'}">
+					<i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="index">Home</span></a>
+				</li>
+				<li class=" nav-item"><a class="d-flex align-items-center" th:href="@{'/home/employer'}">
+					<i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="employer">Employer</span></a>
+				</li>
+				<li class=" nav-item"><a class="d-flex align-items-center" th:href="@{'/home/posting'}">
+					<i data-feather="briefcase"></i><span class="menu-title text-truncate" data-i18n="posting">Job</span></a>	
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- END: Main Menu-->
+
+	<!-- BEGIN: Content-->
+	<div class="app-content content ">
+		<div class="content-overlay"></div>
+		<div class="header-navbar-shadow"></div>
+		<div class="content-wrapper container-xxl p-0">
+			<div class="content-header row">
+			</div>
+			<div class="content-body">
+				<th:block th:replace="${contentData}"></th:block>
+			</div>
+		</div>
+	</div>
+	<!-- END: Content-->
+
+	<div class="sidenav-overlay"></div>
+	<div class="drag-target"></div>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Get all the navigation links
+			const navLinks = document.querySelectorAll('.navigation-main .nav-item');
+
+			// Get the current page's URL
+			const currentPageUrl = window.location.href;
+
+			// Split the URL by slashes and take the second part
+			const currentPage = currentPageUrl.split('/')[4];
+
+			// Check if currentPage is empty or null, set it to 'home'
+			const pageIdentifier = currentPage || 'index';
+
+			// Loop through each navigation link
+			navLinks.forEach(link => {
+				// Get the data-i18n attribute of the link
+				const i18n = link.querySelector('a .menu-title').getAttribute('data-i18n');
+
+				// Check if the data-i18n matches the current page identifier or is a prefix of it
+				if (pageIdentifier == i18n) {
+					// Add the 'active' class to the link if it matches
+					link.classList.add('active');
+				}
+
+				// Add a click event listener to each link
+				link.addEventListener('click', function () {
+					// Remove the 'active' class from all links
+					navLinks.forEach(navLink => {
+						navLink.classList.remove('active');
+					});
+
+					// Add the 'active' class to the clicked link
+					this.classList.add('active');
+				});
+			});
+		});
+	</script>
+	<script>
+		feather.replace({
+			width: 14,
+			height: 14
+		});
+	</script>
+</body>
+
+</html>

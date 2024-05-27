@@ -1,0 +1,108 @@
+<html
+  th:replace="~{layout/company :: renderBody('VietnamJobs - Payment', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Payment</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Payment</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Payment</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <!-- Default box -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title font-weight-bold">Current balance</h3>
+                </div>
+                <div class="card-body">
+                  <label>Balance</label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      th:value="${wallet}"
+                      type="number"
+                      readonly
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text">VND</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <div class="col-12">
+              <!-- Default box -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title font-weight-bold">
+                    Top up your wallet
+                  </h3>
+                </div>
+                <div class="card-body">
+                  <form th:action="@{/employer/payment/payment}" method="POST">
+                    <div class="form-group">
+                      <label>Amount of money</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        name="amount"
+                        placeholder="Enter amount of money..."
+                        required
+                      />
+                    </div>
+                    <button class="btn btn-success" type="submit">
+                      Payment
+                    </button>
+                  </form>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <strong>Note:</strong>
+                  <p>
+                    This function allows users to use money in e-wallets Factors
+                    that increase the prominence of the Recruitment Post and
+                    Company above website or application. By spending the most
+                    money At certain times, users can purchase ratings or
+                    advertising packages Pay to increase the appearance order of
+                    Recruitment Posts or Company, helping to increase
+                    opportunities to reach potential customers and generate
+                    attention to the product or service.
+                  </p>
+                </div>
+                <!-- /.card-footer-->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page specific script -->
+    </div>
+  </body>
+</html>

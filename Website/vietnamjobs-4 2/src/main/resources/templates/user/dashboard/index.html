@@ -1,0 +1,113 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{user/layout/userlayout :: userlayout('Dashboard', ~{this :: h2}, ~{this :: .contentData})}">
+<head>
+<title>Index</title>
+</head>
+<body>
+
+	<h2>Home Page</h2>
+
+    <div class="contentData">
+        <section>
+            <div class="d-flex">
+                <h3>Top employers</h3>
+            </div>
+            <div class="row" style="margin-bottom: 15px;">
+			    <div class="col-lg-2" th:each="employer : ${employers}" style="height: 300px;">
+			        <div class="card" style="margin-bottom: 0; height: 100%;">
+			            <div class="card-header d-flex" style="align-self: center;">
+			                <div>
+								<img th:src="@{'http://localhost:8087/files/' + ${employer.logo}}" width="125" height="125">
+			                </div>
+			            </div>
+			            <div class="card-body text-center" style="display: flex; flex-direction: column;">
+			                <div>
+			                    <b><th:block th:text="${#strings.length(employer.name) > 40} ? ${#strings.substring(employer.name, 0, 40)} + '...' : ${employer.name}"></th:block></b>
+			                </div>
+			                <div style="margin-top: auto;">
+								<a th:href="@{'/home/employer/' + ${employer.id}}" style="color: #000;">
+				                    <button type="button" class="btn btn-sm btn-primary">
+				                        New job
+				                    </button>
+			                    </a>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+        </section>
+
+        <section>
+            <div class="row" style="margin-bottom: 16px;">
+                <div class="col-lg-12">
+                    <div class="card" style="margin-bottom: 0;">
+                        <div class="card-header d-flex">
+                            <h3>Hot jobs </h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-lg-4" th:each="posting : ${postings}" style="margin-bottom: 16px;">
+                                    <div class="card" style="margin-bottom: 0; border: 1px solid black;">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-3" style="display: flex; align-items: center;">
+                                                    <img th:src="@{'http://localhost:8087/files/' + ${posting.employerLogo}}" width="50" height="50">
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <div style="margin-bottom: 0; text-align: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; font-weight: 600; font-size: 16px;">
+														<a th:href="@{'/home/posting/' + ${posting.id}}" style="color: #000;">
+															<th:block th:text="${posting.title}"></th:block>
+														</a>
+													</div>
+                                                    <div style="margin-bottom: 0; text-align: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+														<th:block th:text="${posting.employerName}"></th:block>
+													</div>
+													<div style="margin-bottom: 0; text-align: left;" class="text-warning">
+														<th:block th:text="${posting.wageName}"></th:block>
+													</div>
+                                                    <div style="margin-bottom: 0; text-align: left;">
+														<th:block th:text="${posting.localName}"></th:block>
+													</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <div class="d-flex">
+                <h3>Top career</h3>
+            </div>
+            <div>
+			</div>
+            <div class="row" style="margin-bottom: 16px;">
+                <div class="col-lg-12">
+                    <div class="card" style="margin-bottom: 0;">
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-lg-3" th:each="count : ${counts}">
+                                    <div style="border-radius: 6px; background-color: rgba(0, 90, 255, .05); text-align: center; padding: 20px; display: flex; flex-direction: column; justify-items: center; align-items: center;">
+                                        <div style="border: 1px solid #d4e4fe; background-color: #d4e4fe; width: 90px; height: 90px; display: flex; justify-content: center;">
+                                            <i data-feather="users" style="width: 32px; height: auto; color: #095afc;"></i>
+                                        </div>
+                                        <div style="height: 48px; display: flex; align-items: center; justify-content: center; margin-top: 10px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">
+											<th:block th:text="${count[1]}"></th:block>
+										</div>
+                                        <div style="font-size: 14px;"><th:block th:text="${count[2]}"></th:block> jobs</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

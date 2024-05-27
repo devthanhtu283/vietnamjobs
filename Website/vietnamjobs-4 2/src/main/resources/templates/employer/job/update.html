@@ -1,0 +1,341 @@
+<html
+  th:replace="~{layout/company :: renderBody('VietnamJobs - Update Recruitment Posts', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Update Recruitment Posts</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Update</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/job}">Recruitment Posts</a>
+                </li>
+                <li class="breadcrumb-item active">Update</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <form
+                class="card"
+                enctype="multipart/form-data"
+                method="post"
+                th:action="@{/employer/job/handleUpdate}"
+              >
+                <div class="card-header">
+                  <h4 class="modal-title">Recruitment Posts Details</h4>
+                </div>
+                <div class="card-body">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Title</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter title..."
+                        th:field="${updateJob.title}"
+                        type="text"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Gender</label>
+                      <input
+                        class="form-control"
+                        placeholder="EX: Male, Female"
+                        th:field="${updateJob.gender}"
+                        type="text"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Quantity</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter quantity..."
+                        th:field="${updateJob.quantity}"
+                        type="number"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Deadline</label>
+                      <div
+                        class="input-group date"
+                        id="deadline"
+                        data-target-input="nearest"
+                      >
+                        <input
+                          type="text"
+                          class="form-control datetimepicker-input"
+                          data-target="#deadline"
+                          th:field="${updateJob.deadline}"
+                          required
+                        />
+                        <div
+                          class="input-group-append"
+                          data-target="#deadline"
+                          data-toggle="datetimepicker"
+                        >
+                          <div class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Location</label>
+                      <select
+                        class="form-control select2"
+                        style="width: 100%"
+                        th:field="${updateJob.local}"
+                      >
+                        <th:block th:each="item, index : ${localList}">
+                          <option
+                            th:selected="${index == 0}"
+                            th:value="${item.id}"
+                            th:text="${item.name}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Category</label>
+                      <select
+                        class="form-control select2"
+                        style="width: 100%"
+                        th:field="${updateJob.category}"
+                      >
+                        <th:block th:each="item, index : ${categoryList}">
+                          <option
+                            th:selected="${index == 0}"
+                            th:value="${item.id}"
+                            th:text="${item.name}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Experience</label>
+                      <select
+                        class="form-control select2"
+                        style="width: 100%"
+                        th:field="${updateJob.experience}"
+                      >
+                        <th:block th:each="item, index : ${experienceList}">
+                          <option
+                            th:selected="${index == 0}"
+                            th:value="${item.id}"
+                            th:text="${item.name}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Work Form</label>
+                      <select
+                        class="form-control select2"
+                        style="width: 100%"
+                        th:field="${updateJob.type}"
+                      >
+                        <th:block th:each="item, index : ${typeList}">
+                          <option
+                            th:selected="${index == 0}"
+                            th:value="${item.id}"
+                            th:text="${item.name}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Rank</label>
+                      <select
+                        class="form-control select2"
+                        style="width: 100%"
+                        th:field="${updateJob.rank}"
+                      >
+                        <th:block th:each="item, index : ${rankList}">
+                          <option
+                            th:selected="${index == 0}"
+                            th:value="${item.id}"
+                            th:text="${item.name}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Wage</label>
+                      <select
+                        class="form-control select2"
+                        style="width: 100%"
+                        th:field="${updateJob.wage}"
+                      >
+                        <th:block th:each="item, index : ${wageList}">
+                          <option
+                            th:selected="${index == 0}"
+                            th:value="${item.id}"
+                            th:text="${item.name}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea
+                        class="form-control"
+                        rows="5"
+                        placeholder="Enter a description..."
+                        th:field="${updateJob.description}"
+                        required
+                      ></textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="icheck-success d-inline">
+                        <input
+                          id="updateStatus"
+                          th:field="${updateJob.open}"
+                          type="checkbox"
+                        />
+                        <label for="updateStatus">
+                          Status Recruitment Posts
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <h6 class="text-right mt-3">
+                        <strong>Status Accept:</strong>
+                        <span
+                          th:if="${updateJob.status == true}"
+                          class="text-success font-weight-bold"
+                          >Accepted</span
+                        >
+                        <span
+                          th:if="${updateJob.status == false}"
+                          class="text-danger font-weight-bold"
+                          >Reject</span
+                        >
+                      </h6>
+                      <input type="hidden" th:field="${updateJob.status}" />
+                    </div>
+                    <div class="form-group">
+                      <h6 class="text-right">
+                        <strong>Date created:</strong>
+                        <span
+                          th:text="${#dates.format(updateJob.created, 'dd/MM/yyyy')}"
+                        ></span>
+                      </h6>
+                    </div>
+                    <div class="form-group">
+                      <input type="hidden" th:field="${updateJob.id}" />
+                      <input type="hidden" th:field="${updateJob.employer}" />
+
+                      <div
+                        class="input-group date"
+                        id="created"
+                        data-target-input="nearest"
+                        style="display: none"
+                      >
+                        <input
+                          type="text"
+                          class="form-control datetimepicker-input"
+                          data-target="#created"
+                          th:field="${updateJob.created}"
+                        />
+                        <div
+                          class="input-group-append"
+                          data-target="#created"
+                          data-toggle="datetimepicker"
+                        >
+                          <div class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer justify-content-between">
+                  <button class="btn btn-success" type="submit">
+                    Save change
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page specific script -->
+      <script>
+        $(function () {
+          //Date picker
+          $("#deadline").datetimepicker({
+            format: "DD/MM/YYYY",
+          });
+        });
+      </script>
+      <script>
+        $(function () {
+          //Date picker
+          $("#created").datetimepicker({
+            format: "DD/MM/YYYY",
+          });
+        });
+      </script>
+      <script th:if="${success != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Process information successfully!",
+          });
+        });
+      </script>
+      <script th:if="${error != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Something went wrong! Try later...",
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{user/layout/userlayout :: userlayout('Employer Viewed CV', ~{this :: h2}, ~{this :: .contentData})}">
+<head>
+<title>Index</title>
+</head>
+<body>
+
+	<h2>My jobs</h2>
+
+    <div class="contentData">
+    	<section>
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -.2px; line-height: 28px; margin-bottom: 16px;">
+                                Saved job
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div 
+                                    	class="card mb-md-1" 
+                                    	style="margin-bottom: 0; border: 1px solid rgb(241, 241, 241); border-radius: 12px;"
+                                    	th:each="posting : ${postings}"
+                                    >
+                                        <div class="card-body" style="padding-top: 10px; padding-bottom: 10px;">
+                                            <div style="display: flex; gap: 32px;">
+                                                <div style="display: flex; align-items: center; padding: 0px;">
+                                                    <img th:src="@{'http://localhost:8087/files/' + ${posting.employerLogo}}" width="75" height="75">
+                                                </div>
+                                                <div style="display: flex; flex-direction: column; justify-content: center; align-items: baseline; gap: 4px">
+                                                    <div style="font-size: large;">
+														<a th:href="@{'/home/posting/' + ${posting.id}}" style="color: #000;">
+															<b><th:block th:text="${posting.title}"></th:block></b>
+														</a>
+													</div>
+                                                    <div>
+														<th:block th:text="${posting.employerName}"></th:block>
+													</div>
+                                                    <div style="text-align: left;">
+                                                        <span class="text-warning">
+															<th:block th:text="${posting.wageName}"></th:block>
+														</span>
+														 - <th:block th:text="${posting.localName}"></th:block>
+														 - Deadline: <th:block th:text="${#dates.format(posting.dealine, 'dd/MM/yyyy')}"></th:block>
+                                                    </div>
+                                                    <div>Your CV has been sent to the employer</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-lg-3">
+				   <div class="card">
+					    <div class="card-body">
+							<div style="font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -.2px; line-height: 28px; margin-bottom: 16px;">
+                                Job you may interest
+                            </div>
+                            <div class="row">
+								<div class="col-lg-12">
+									<div 
+										class="card" 
+                                    	style="margin-bottom: 8px; border: 1px solid rgb(241, 241, 241); border-radius: 12px;"
+                                    	th:each="randomPosting : ${randomPostings}"
+                                    >
+										<div class="card-body" style="padding: 8px;">
+											<div style="display: flex; gap: 8px;">
+                                                <div style="display: flex; align-items: center; padding: 0px;">
+                                                    <img th:src="@{'http://localhost:8087/files/' + ${randomPosting.employerLogo}}" width="75" height="75">
+                                                </div>
+                                                <div style="display: flex; flex-direction: column; justify-content: center; align-items: baseline; gap: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                    <div style="font-weight: 600; font-size: 16px; line-height: 20px; overflow: hidden;">
+														<a th:href="@{'/home/posting/' + ${randomPosting.id}}" style="color: #000;">
+															<b><th:block th:text="${randomPosting.title}"></th:block></b>
+														</a>
+													</div>
+                                                    <div style="font-size: 14px; line-height: 18px;">
+														<th:block th:text="${randomPosting.employerName}"></th:block>
+													</div>
+													<div class="text-warning">
+														<th:block th:text="${randomPosting.wageName}"></th:block>
+													</div>
+													<div style="font-size: 14px; line-height: 18px;">
+														<th:block th:text="${randomPosting.localName}"></th:block>
+													</div>
+                                                </div>
+                                        	</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				   </div>
+			   </div>
+            </div>
+        </section>
+    </div>
+	
+</body>
+</html>

@@ -1,0 +1,200 @@
+<html
+  th:replace="~{layout/admin :: renderBody('VietnamJobs - Account', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Account</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Account List</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/admin}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Account</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">List</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table
+                    class="table table-bordered table-striped"
+                    id="accountTable"
+                  >
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Date created</th>
+                        <th>Role</th>
+                        <th>Wallet</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="item : ${accountList}">
+                        <td th:text="${item.id}"></td>
+                        <td th:text="${item.username}"></td>
+                        <td th:text="${item.email}"></td>
+                        <td>
+                          <p style="display: none" th:text="${item.status}"></p>
+                          <th:block th:if="${item.status == true}">
+                            <span class="badge badge-success">Active</span>
+                          </th:block>
+                          <th:block th:if="${item.status == false}">
+                            <span class="badge badge-danger">Inactive</span>
+                          </th:block>
+                        </td>
+                        <td
+                          th:text="${#dates.format(item.created, 'dd/MM/yyyy')}"
+                        ></td>
+                        <td>
+                          <th:block th:if="${item.getTypeAccount().id == 1}">
+                            <span class="badge badge-pill badge-light"
+                              >Candidate</span
+                            >
+                          </th:block>
+                          <th:block th:if="${item.getTypeAccount().id == 2}">
+                            <span class="badge badge-pill badge-info"
+                              >Employer</span
+                            >
+                          </th:block>
+                          <th:block th:if="${item.getTypeAccount().id == 3}">
+                            <span class="badge badge-pill badge-secondary"
+                              >Admin</span
+                            >
+                          </th:block>
+                        </td>
+                        <td th:text="${item.wallet}"></td>
+                        <td>
+                          <form
+                            enctype="multipart/form-data"
+                            method="post"
+                            th:action="@{'/admin/account/updateStatus/' + ${item.id}}"
+                          >
+                            <button
+                              type="submit"
+                              class="btn btn-danger"
+                              th:if="${item.status == true}"
+                            >
+                              <i class="fas fa-user-times"></i>
+                            </button>
+                            <button
+                              type="submit"
+                              class="btn btn-success"
+                              th:if="${item.status == false}"
+                            >
+                              <i class="fas fa-user-check"></i>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+
+      <!-- Page specific script -->
+      <script>
+        $(function () {
+          $("#accountTable")
+            .DataTable({
+              responsive: true,
+              lengthChange: false,
+              autoWidth: false,
+              buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            })
+            .buttons()
+            .container()
+            .appendTo("#accountTable_wrapper .col-md-6:eq(0)");
+        });
+      </script>
+      <script th:if="${success != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Process information successfully!",
+          });
+        });
+      </script>
+      <script th:if="${error != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Something went wrong! Try later...",
+          });
+        });
+      </script>
+      <script th:if="${notFound != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "NOT FOUND",
+            text: "List does not contain this data",
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

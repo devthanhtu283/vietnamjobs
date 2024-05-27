@@ -1,0 +1,368 @@
+<html th:replace="~{layout/company :: renderBody('VietnamJobs - Recruitment', ~{this::.content-wrapper})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>VietnamJobs - Recruitment</title>
+</head>
+
+<!---->
+
+<!---->
+
+<body>
+<style>
+    label, input {
+        display: block;
+    }
+
+    input.text {
+        margin-bottom: 12px;
+        width: 95%;
+        padding: .4em;
+    }
+
+    fieldset {
+        padding: 0;
+        border: 0;
+        margin-top: 25px;
+    }
+
+    h1 {
+        font-size: 1.2em;
+        margin: .6em 0;
+    }
+
+    div#users-contain {
+        width: 350px;
+        margin: 20px 0;
+    }
+
+    div#users-contain table {
+        margin: 1em 0;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    div#users-contain table td, div#users-contain table th {
+        border: 1px solid #eee;
+        padding: .6em 10px;
+        text-align: left;
+    }
+
+    .ui-dialog .ui-state-error {
+        padding: .3em;
+    }
+
+    .validateTips {
+        border: 1px solid transparent;
+        padding: 0.3em;
+    }
+</style>
+<div class="content-wrapper">
+
+    <!-- Breadcrumb -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>List Recruitment</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a th:href="@{/employer/dashboard}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Recruitment</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="card-title">List</h3>
+                            <button class="btn btn-success btn-sm d-flex align-items-center ml-auto" onclick="openPDFDialog()"
+                                    type="button">
+                               Open PDF
+                            </button>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped" id="localTable">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Company</th>
+                                    <th>Candidate</th>
+                                    <th>Date created</th>
+                                    <th>Deadline</th>
+                                    <th>Date application</th>
+                                    <th>Status</th>
+                                    <th>Result</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="app, i : ${@applicationHistoryService.findByPostingID(id)}">
+                                    <td th:text="${app.id}"></td>
+                                    <td th:text="${app.postingTitle}"></td>
+                                    <td th:text="${app.employerName}"></td>
+                                    <td th:text="${app.seekerName}"></td>
+                                    <td th:text="${app.postingCreated}"></td>
+                                    <td th:text="${app.postingDeadline}"></td>
+                                    <td th:text="${app.create}"></td>
+                                    <td class="status" th:text="${app.status == 1 ? 'Viewed' : 'Not seen'}"></td>
+                                    <td th:text="${app.result == 0 ? 'Reject' : (app.result == 1 ? 'Accept' : 'Reject')}"></td>
+                                    <td class="d-flex align-items-center">
+                                        <button class="viewCV btn btn-outline-success mr-2" th:data-appID="${app.id}"
+                                                th:data-seekerID="${app.seekerID}">View CV
+                                        </button>
+                                        <button class="btn btn-danger mr-2"
+                                                onclick="return confirm('Confirm rejection of candidate?');"><a th:href="@{'/employer/apply/reject/' + ${app.id}}">Reject</a>
+                                        </button>
+                                        <button class="buttonAcp btn btn-success" th:data-appID="${app.id}"
+                                                th:data-seekerID="${app.seekerID}">Invite for interview
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <!--			-->
+            <!--Modal Update-->
+            <div class="modal fade" id="emailDialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content" enctype="multipart/form-data" method="post"
+                         th:action="@{/admin/category/handleUpdate}">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Interview letter</h4>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Send to</label>
+                                    <input class="form-control" id="mailTo" type="text" value="letu36592@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input class="form-control" id="mailSubject" type="text"
+                                           value="Job interview invitation letter">
+                                </div>
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <div contenteditable=true
+                                         id="mailBody"
+                                         style="border: 1px solid #ced4da; border-radius: 4px; padding: 16px;">
+                                        <div>
+                                            <div style="display: flex; justify-content: center; align-items: center;">
+                                                <img height="100" src="https://static.topcv.vn/company_logos/DI0mrf3w2ImlSatkOrvo1eMLqDJgJYhs_1698750119____c4502361f4204ef5b499959700371263.jpg" style="border-radius: 50%;"
+                                                     width="100">
+                                            </div>
+                                            <h4 style="text-align: center; margin-top: 16px; margin-bottom: 50px;">INTERVIEW LETTER</h4>
+
+											<p><span id="seekerName" style="color: #dc3545; margin-bottom: 16px;"></span> thân mến,</p>
+
+                                            <p>Trước hết, chúng tôi rất cảm ơn sự quan tâm của bạn về vị trí <span
+                                                    id="postingTitle" style="color: #dc3545;"></span> của Company  <span
+                                                    class="employerName" style="color: #dc3545;"></span> chúng tôi.</p>
+
+                                            <p>Tôi hiện là trưởng bộ phận tuyển dụng của Company <span
+													class="employerName" style="color: #dc3545;"></span>. Qua hồ sơ của bạn, chúng tôi nhận thấy bạn có đủ tiềm năng để trở thành người đồng hành,
+		giúp Company chúng tôi phát triển hơn nữa trong tương lai.
+		</p>
+
+                                            <p>Vì vậy, chúng tôi rất hy vong có thể có một buổi trao đổi ngắn với bạn qua điện thoại vào thời gian <span
+                                                    style="color: #dc3545;">09:00 sáng ngày 09/05/2024</span> . Đây là bước
+		cần thiết trong quá trình tuyển dụng để Company có thể hiểu hơn về bạn và để bạn có thể biết thêm về Company.
+		</p>
+
+                                            <p>
+		Bạn vui lòng phản hồi lại email này trước <span style="color: #dc3545;">23:59 ngày 07/05/2024</span> để xác nhận có thể tham gia phỏng vấn hay không. Nếu có gì bất tiện hoặc bất kỳ thắc mắc
+		nào bạn có thể liên hệ qua email abccompany@gmail.com này hoặc qua số điện thoại <span style="color: #dc3545;">0986963666</span>
+		</p>
+
+                                            <p>
+			Chúng tôi rất mong sớm được trò chuyện với bạn.
+		</p>
+                                            <p style="margin: 0;">Trân trọng,</p>
+                                            <span><u><i><span class="employerName"></span></i></u></span>
+
+                                        </div>
+                                    </div>
+                                    <input id="appID" type="hidden">
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+                                <button class="btn btn-success" data-dismiss="modal" id="sendMail">Send mail</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
+                <!--			-->
+
+            </div>
+            <!-- /.container-fluid -->
+    </section>
+    <!--  Page Script	-->
+    <script>
+        $(document).ready(function () {
+            $('#sendMail').click(function () {
+                var mailBody = $('#mailBody').html();
+                var mailTo = $('#mailTo').val();
+                var mailSubject = $('#mailSubject').val();
+                var mailFrom = 'truongvanhuong221196@gmail.com';
+                var appID = $('#appID').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/ajax/sendMailAcp',
+                    data: {
+                        mailBody: mailBody,
+                        mailTo: mailTo,
+                        mailSubject: mailSubject,
+                        mailFrom: mailFrom,
+                        appID: appID
+                    }, 
+                    success: function(status){
+                    	
+                    	 var Toast = Swal.mixin({
+		                toast: true,
+		                position: 'top-end',
+		                timer: 3000,
+		                timerProgressBar: true,
+		                showConfirmButton: false,
+		                showCloseButton: true,
+		            });
+
+		            Toast.fire({
+		                icon: 'success',
+		                title: "SUCCESS",
+		                text: 'Process information successfully!'
+		
+		            })
+                    }
+                });
+            });
+            $('.viewCV').click(function () {
+                var seekerID = $(this).attr('data-seekerID');
+                var appID = $(this).attr('data-appID');
+                var statusCell = $(this).closest('tr').find('.status');
+                $.ajax({
+                    type: 'GET',
+                    url: '/ajax/viewCV',
+                    data: {
+                        seekerID: seekerID,
+                        appID: appID
+                    },
+                    success: function (app) {
+                        statusCell.text('Đã xem');
+                        var pdfPath = window.location.origin + '/files/' + app.seekerCV;
+                        window.open(pdfPath, '_blank');
+                    }
+                });
+            });
+        });
+        $(function () {
+
+            $('.buttonAcp').click(function () {
+                var appID = $(this).attr('data-appID');
+                // $( "#emailDialog" ).dialog({
+                // 	width: 800,
+                // 	height: 800
+                // });
+                $('#emailDialog').modal('show');
+                $.ajax({
+                    type: 'GET',
+                    url: '/ajax/mailDialog',
+                    data: {
+                        appID: appID
+                    },
+                    success: function (app) {
+                        $('#mailTo').val(app.seekerEmail);
+                        $('#seekerName').html(app.seekerName);
+                        $('#postingTitle').html(app.postingTitle);
+                        $('.employerName').html(app.employerName);
+                        $('#appID').val(app.id);
+                    }
+                });
+
+            });
+        });
+
+    </script>
+    <script th:if="${success != null}">
+        $(document).ready(function () {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: "SUCCESS",
+                text: 'Process information successfully!'
+
+            })
+        });
+    </script>
+    <script th:if="${error != null}">
+        $(document).ready(function () {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+
+            Toast.fire({
+                icon: 'error',
+                title: "ERROR",
+                text: 'Something went wrong! Try later...'
+            })
+        });
+    </script>
+</div>
+
+<!--	-->
+
+
+<script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!--	-->
+</div>
+
+
+</body>
+
+
+</html>

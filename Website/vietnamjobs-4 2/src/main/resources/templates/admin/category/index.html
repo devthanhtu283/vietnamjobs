@@ -1,0 +1,389 @@
+<html
+  th:replace="~{layout/admin :: renderBody('VietnamJobs - Category', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Category List</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Category List</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/admin/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Category</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header d-flex align-items-center">
+                  <h3 class="card-title">List</h3>
+                  <button
+                    class="btn btn-success btn-sm d-flex align-items-center ml-auto"
+                    data-target="#modalAdd"
+                    data-toggle="modal"
+                    type="button"
+                  >
+                    <i class="fas fa-plus mr-1"></i>
+                    Add New
+                  </button>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table
+                    class="table table-bordered table-striped"
+                    id="experienceTable"
+                  >
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="item : ${categoryParentList}">
+                        <td th:text="${item.id}">
+                          <p th:text="${item.parentId}"></p>
+                        </td>
+                        <td th:text="${item.name}"></td>
+                        <td>
+                          <p style="display: none" th:text="${item.status}"></p>
+                          <th:block th:if="${item.status == true}">
+                            <span class="badge badge-success">Active</span>
+                          </th:block>
+                          <th:block th:if="${item.status == false}">
+                            <span class="badge badge-danger">Inactive</span>
+                          </th:block>
+                        </td>
+                        <td class="d-flex align-items-center">
+                          <a
+                            class="btn btn-danger mr-2"
+                            th:href="@{'/admin/category/delete/' + ${item.id} + '/' + ${item.parentId}}"
+                            ><i class="fas fa-trash-alt"></i
+                          ></a>
+                          <button
+                            class="btn btn-info btn-edit mr-2"
+                            data-target="#modalUpdate"
+                            data-toggle="modal"
+                            type="button"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <a
+                            class="btn btn-secondary"
+                            th:href="@{'/admin/category/' + ${item.id}}"
+                          >
+                            <i class="far fa-folder-open"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+
+      <!--Modal Add-->
+      <div class="modal fade" id="modalAdd">
+        <div class="modal-dialog">
+          <form
+            class="modal-content"
+            enctype="multipart/form-data"
+            method="post"
+            th:action="@{/admin/category/handleAdd}"
+          >
+            <div class="modal-header">
+              <h4 class="modal-title">Add New</h4>
+              <button
+                aria-label="Close"
+                class="close"
+                data-dismiss="modal"
+                type="button"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Category name</label>
+                  <input
+                    class="form-control mb-4"
+                    placeholder="Enter category name..."
+                    th:field="${newItem.name}"
+                    type="text"
+                    required
+                  />
+                </div>
+                <input value="0" th:field="${newItem.parentId}" type="hidden" />
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button
+                class="btn btn-default"
+                data-dismiss="modal"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button class="btn btn-success" type="submit">Create new</button>
+            </div>
+          </form>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!--Modal Update-->
+      <div class="modal fade" id="modalUpdate">
+        <div class="modal-dialog">
+          <form
+            class="modal-content"
+            enctype="multipart/form-data"
+            method="post"
+            th:action="@{/admin/category/handleUpdate}"
+          >
+            <div class="modal-header">
+              <h4 class="modal-title">Update</h4>
+              <button
+                aria-label="Close"
+                class="close"
+                data-dismiss="modal"
+                type="button"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Category name</label>
+                  <input
+                    class="form-control"
+                    id="updateName"
+                    placeholder="Enter category name..."
+                    th:field="${updateItem.name}"
+                    type="text"
+                    required
+                  />
+                </div>
+                <div class="form-group mt-4">
+                  <div class="icheck-success d-inline">
+                    <input
+                      id="updateStatus"
+                      th:field="${updateItem.status}"
+                      type="checkbox"
+                    />
+                    <label for="updateStatus"> Status </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input
+                    class="form-control"
+                    id="updateId"
+                    th:field="${updateItem.id}"
+                    type="hidden"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    value="0"
+                    th:field="${updateItem.parentId}"
+                    type="hidden"
+                  />
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button
+                class="btn btn-default"
+                data-dismiss="modal"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button class="btn btn-success" type="submit">Save change</button>
+            </div>
+          </form>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+      <!-- Page specific script -->
+      <script>
+        $(function () {
+          $("#experienceTable")
+            .DataTable({
+              responsive: true,
+              lengthChange: false,
+              autoWidth: false,
+              buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            })
+            .buttons()
+            .container()
+            .appendTo("#experienceTable_wrapper .col-md-6:eq(0)");
+        });
+      </script>
+      <script>
+        $(document).ready(function () {
+          $(".btn-edit").click(function () {
+            var itemId = $(this).closest("tr").find("td:eq(0)").text().trim();
+            var itemName = $(this).closest("tr").find("td:eq(1)").text().trim();
+            var itemStatus = $(this)
+              .closest("tr")
+              .find("td:eq(2) > p")
+              .text()
+              .trim();
+
+            $("#updateName").val(itemName);
+            $("#updateId").val(itemId);
+            if (itemStatus === "true") {
+              $("#updateStatus").prop("checked", true);
+            } else {
+              $("#updateStatus").prop("checked", false);
+            }
+
+            $("#modalUpdate").modal("show");
+          });
+        });
+      </script>
+      <script th:if="${success != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Process information successfully!",
+          });
+        });
+      </script>
+      <script th:if="${error != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Something went wrong! Try later...",
+          });
+        });
+      </script>
+      <script th:if="${exist != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "EXIST",
+            text: "List already exists this data",
+          });
+        });
+      </script>
+      <script th:if="${hasChildren != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "CONTAINS SUBFOLDERS",
+            text: "Cannot be deleted, you can Inactive the category",
+          });
+        });
+      </script>
+      <script th:if="${notFound != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "NOT FOUND",
+            text: "List does not contain this data",
+          });
+        });
+      </script>
+      <script th:if="${existPost != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "CONTAINS POSTS",
+            text: "You can update the Status to Inactive",
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

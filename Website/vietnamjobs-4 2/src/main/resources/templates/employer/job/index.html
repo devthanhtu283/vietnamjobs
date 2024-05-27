@@ -1,0 +1,178 @@
+<html th:replace="~{layout/company :: renderBody('VietnamJobs - Recruitment Posts', ~{this::.content-wrapper})}"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>VietnamJobs - Recruitment Posts</title>
+</head>
+
+<!---->
+
+<!---->
+
+<body>
+
+	<div class="content-wrapper">
+
+		<!-- Breadcrumb -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>Recruitment Posts List</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a th:href="@{/employer/dashboard}">Dashboard</a></li>
+							<li class="breadcrumb-item active">Recruitment Posts</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header d-flex align-items-center">
+								<h3 class="card-title">List</h3>
+								<a class="btn btn-success btn-sm d-flex align-items-center ml-auto"
+									th:href="${'/employer/job/add'}">
+									<i class="fas fa-plus mr-1"></i>
+									Add New
+								</a>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table class="table table-bordered table-striped" id="localTable">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Title</th>
+											<th>Company</th>
+											<th>Date created</th>
+											<th>Deadline</th>
+											<th>Recruitment Posts</th>
+											<th>Status</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="item : ${jobList}">
+											<td th:text="${item.id}"></td>
+											<td th:text="${item.title}"></td>
+											<td th:text="${item.employer.name}"></td>
+											<td th:text="${#dates.format(item.created, 'dd/MM/yyyy')}"></td>
+											<td th:text="${#dates.format(item.deadline, 'dd/MM/yyyy')}"></td>
+											<td>
+												<span class="badge badge-pill badge-light"
+													th:if="${item.open == true}">Opening</span>
+												<span class="badge badge-pill badge-secondary"
+													th:if="${item.open == false}">Closed</span>
+											</td>
+											<td>
+												<span class="badge badge-pill badge-success"
+													th:if="${item.status == true}">Accepted</span>
+												<span class="badge badge-pill badge-danger"
+													th:if="${item.status == false}">Reject</span>
+											</td>
+											<td class="d-flex align-items-center align-content-center">
+												<a class="btn btn-danger mr-2"
+												   th:href="@{'/employer/job/delete/' + ${item.id}}"><i
+														class="fas fa-trash-alt"></i></a>
+												<a class="btn btn-info mr-2"
+													th:href="@{'/employer/job/update/' + ${item.id}}">
+													<i class="fas fa-edit"></i>
+												</a>
+												<a class="btn btn-secondary"
+													th:href="@{'/employer/apply/' + ${item.id}}">
+													<i class="fas fa-list-ul"></i>
+												</a>&nbsp;&nbsp;
+												<a th:href="@{'/employer/posting/payment/' + ${item.id}}"
+													onclick="alert('Nang cap bai dang?')"> <button
+														class="btn btn-primary mr-2" type="button"><i
+															class="far fa-credit-card"></i></button></a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<!--  Page Script	-->
+		<script th:if="${success != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					timerProgressBar:true,
+					showConfirmButton:false,
+					showCloseButton:true,
+				});
+
+				Toast.fire({
+					icon: 'success',
+					title: "SUCCESS",
+					text: 'Process information successfully!'
+
+				})
+			});
+		</script>
+		<script th:if="${error != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					timerProgressBar:true,
+					showConfirmButton:false,
+					showCloseButton:true,
+				});
+
+				Toast.fire({
+					icon: 'error',
+					title: "ERROR",
+					text: 'Something went wrong! Try later...'
+				})
+			});
+		</script>
+		<script th:if="${existApply != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					timerProgressBar:true,
+					showConfirmButton:false,
+					showCloseButton:true,
+				});
+
+				Toast.fire({
+					icon: 'warning',
+					title: "CONTAINS RECRUITMENT",
+					text: 'You can Update Cancel job posting'
+				})
+			});
+		</script>
+
+	</div>
+
+	</div>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,215 @@
+<html
+  th:replace="~{layout/admin :: renderBody('VietnamJobs - Recruitment Posts', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Recruitment Posts</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Recruitment Posts List</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/admin}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Recruitment Posts</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header d-flex align-items-center">
+                  <h3 class="card-title">List</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table
+                    class="table table-bordered table-striped"
+                    id="localTable"
+                  >
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Logo</th>
+                        <th>Company</th>
+                        <th>Title</th>
+                        <th>Date created</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="item : ${jobList}">
+                        <td th:text="${item.id}"></td>
+                        <td>
+                          <img
+                            height="60"
+                            style="object-fit: contain"
+                            th:src="@{'http://localhost:8087/files/'+ ${item.employer.logo}}"
+                            width="60"
+                            th:if="${item.employer.logo.length() > 0}"
+                          />
+                          <img
+                            height="60"
+                            style="object-fit: contain"
+                            th:src="@{/assets/images/no-img.png}"
+                            width="60"
+                            th:if="${item.employer.logo.length()<= 0}"
+                          />
+                        </td>
+                        <td>
+                          <p th:text="${item.employer.name}"></p>
+                        </td>
+                        <td th:text="${item.title}"></td>
+                        <td
+                          th:text="${#dates.format(item.created, 'dd/MM/yyyy')}"
+                        ></td>
+                        <td
+                          th:text="${#dates.format(item.deadline, 'dd/MM/yyyy')}"
+                        ></td>
+                        <td>
+                          <p style="display: none" th:text="${item.status}"></p>
+                          <th:block th:if="${item.status == true}">
+                            <span class="badge badge-success">Accept</span>
+                          </th:block>
+                          <th:block th:if="${item.status == false}">
+                            <span class="badge badge-danger">Reject</span>
+                          </th:block>
+                        </td>
+                        <td class="d-flex align-items-center">
+                          <form
+                            class="mb-0"
+                            enctype="multipart/form-data"
+                            method="post"
+                            th:action="@{'/admin/job/updateStatus/' + ${item.id}+'/'+${false}}"
+                          >
+                            <button
+                              class="btn btn-danger mr-2"
+                              th:if="${item.status == true}"
+                              type="submit"
+                            >
+                              <i class="fas fa-times"></i>
+                            </button>
+                            <button
+                              class="btn btn-success mr-2"
+                              th:if="${item.status == false}"
+                              type="submit"
+                            >
+                              <i class="fas fa-check"></i>
+                            </button>
+                          </form>
+                          <a
+                            class="btn btn-info"
+                            th:href="@{'/admin/job/detail/' + ${item.id}}"
+                            ><i class="fas fa-info"></i
+                          ></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+
+      <!-- Page specific script -->
+      <script>
+        $(function () {
+          $("#localTable")
+            .DataTable({
+              responsive: true,
+              lengthChange: false,
+              autoWidth: false,
+              buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            })
+            .buttons()
+            .container()
+            .appendTo("#localTable_wrapper .col-md-6:eq(0)");
+          // Alert
+          let status = false;
+          if (status === true) {
+            toastr.success("Success");
+            toastr.error("Failed");
+          }
+        });
+      </script>
+      <script th:if="${success != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Process information successfully!",
+          });
+        });
+      </script>
+      <script th:if="${error != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Something went wrong! Try later...",
+          });
+        });
+      </script>
+      <script th:if="${notFound != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "NOT FOUND",
+            text: "List does not contain this data",
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

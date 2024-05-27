@@ -1,0 +1,141 @@
+<html th:replace="~{layout/company :: renderBody('VietnamJobs - Recruitment Posts List', ~{this::.content-wrapper})}"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>VietnamJobs - Recruitment Posts List</title>
+</head>
+
+<!---->
+
+<!---->
+
+<body>
+	<div class="content-wrapper">
+
+		<!-- Breadcrumb -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>List Recruitment Posts</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a th:href="@{/employer/dashboard}">Dashboard</a></li>
+							<li class="breadcrumb-item active">Recruitment Posts</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header d-flex align-items-center">
+								<h3 class="card-title">List</h3>
+								<button type="button" class="btn btn-success btn-sm d-flex align-items-center ml-auto"
+									onclick="openPDFDialog()">
+									Open PDF
+								</button>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table class="table table-bordered table-striped" id="localTable">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Title</th>
+											<th>Date created</th>
+											<th>Deadline</th>
+											<th>Status</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="posting, i : ${postings}">
+											<td th:text="${posting.id}"></td>
+											<td th:text="${posting.title}"></td>
+											<td th:text="${posting.created}"></td>
+											<td th:text="${posting.dealine}"></td>
+											<td class="status"
+												th:text="${posting.status == true ? 'Still active' : 'Closed'}"></td>
+											<td>
+												<a th:href="@{'/employer/posting/delete/' + ${posting.id}}"
+													onclick="alert('Are You Sure?')"> <button
+														class="btn btn-danger mr-2" type="button"><i
+															class="fas fa-trash-alt"></i></button></a>
+
+												<a th:href="@{'/employer/posting/edit/' + ${posting.id}}"> <button
+														class="btn btn-info" type="button" data-toggle="modal"
+														data-target="#modalUpdate"><i
+															class="fas fa-edit"></i></button></button></a>
+															&nbsp;
+												<a th:href="@{'/employer/posting/payment/' + ${posting.id}}"
+													onclick="alert('Nang cap bai dang?')"> <button
+														class="btn btn-primary mr-2" type="button"><i
+															class="far fa-credit-card"></i></button></a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+
+			</div>
+
+		</section>
+		<script th:if="${success != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					timerProgressBar: true,
+					showConfirmButton: false,
+					showCloseButton: true,
+				});
+
+				Toast.fire({
+					icon: 'success',
+					title: "SUCCESS",
+					text: 'Process information successfully!'
+
+				})
+			});
+		</script>
+		<script th:if="${error != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					timerProgressBar: true,
+					showConfirmButton: false,
+					showCloseButton: true,
+				});
+
+				Toast.fire({
+					icon: 'error',
+					title: "ERROR",
+					text: 'Something went wrong! Try later...'
+				})
+			});
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	</div>
+
+
+
+</body>
+
+
+</html>

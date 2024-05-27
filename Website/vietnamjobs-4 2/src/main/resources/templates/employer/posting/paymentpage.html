@@ -1,0 +1,188 @@
+<html th:replace="~{layout/company :: renderBody('VietnamJobs - Postings', ~{this::.content-wrapper})}"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>VietnamJobs - Posting</title>
+</head>
+
+<body>
+	<div class="content-wrapper">
+		<!-- Breadcrumb -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>
+							Upgrade Recruitment Posts</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+							<li class="breadcrumb-item active">Recruitment Posts</li>
+							<li class="breadcrumb-item active">Payment</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1 style="color: red;">
+							<th:block th:text="${result}"></th:block>
+						</h1>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<form th:action="@{/employer/posting/payment}" method="post">
+
+				<div class="form-group col-md-10">
+					<label>Employer name</label>
+					<br>
+					<p style="font-size: large; font-family: Georgia, 'Times New Roman', Times, serif;">
+						<th:block th:text="${employer.name}"></th:block>
+					</p>
+				</div>
+				<div class="form-group col-md-10">
+					<label>Total amount of money in wallet</label>
+					<br>
+					<p style="font-size: large; font-family: Georgia, 'Times New Roman', Times, serif;">
+						<th:block th:text="${wallet}"></th:block>
+					</p>
+				</div>
+				<div class="form-group col-md-10">
+					<label>Title Recruitment Posts</label>
+					<br>
+					<p style="font-size: large; font-family: Georgia, 'Times New Roman', Times, serif;">
+						<th:block th:text="${@postingService.findById(postingid).title}"></th:block>
+					</p>
+				</div>
+				<div class="form-group col-md-10">
+					<label>Daily expenses</label>
+					<input type="number" class="form-control" placeholder="money" th:field="${postingspaymentDTO.cost}"
+						required>
+				</div>
+
+				<div class="form-group col-md-10">
+					<label>Job posts in the same category have the best daily costs</label>
+					<br>
+					<th:block th:each="postingpayment, i : ${mostpayment}">
+						<th:block th:text="${@postingService.findById(postingpayment.postingsid).title}"> </th:block>:
+						Total: <th:block style="color: red;" th:text="${postingpayment.cost}"></th:block>/day<br>
+					</th:block>
+				</div>
+				<div class="form-row col-md-10">
+					<div class="form-group col-md-5">
+						<label>Duration</label>
+						<input type="number" class="form-control" placeholder="duration day"
+							th:field="${postingspaymentDTO.duration}" min="1" required>
+					</div>
+					<div class="form-group col-md-1">
+						<label for="alternate">&nbsp;</label>
+						<br>
+						<p>day.</p>
+					</div>
+				</div>
+				<input type="hidden" th:name="postingid" th:value="${postingid}">
+				<div class="col-md-10">
+					<div style="text-align:left;">
+						<button type="submit" class="codepro-custom-btn codepro-btn-7" target="blank"
+							title="Code Pro"><span>Accept</span></button>
+					</div>
+				</div>
+
+			</form>
+
+		</section>
+
+		<footer class="main-footer">
+			<strong>Copyright &copy; 2024-2025 <a href="https://google.com">Google</a>.</strong>
+			All rights reserved.
+			<div class="float-right d-none d-sm-inline-block">
+				<b>Version</b> 1.1.0
+			</div>
+		</footer>
+		<script th:if="${success != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					timerProgressBar: true,
+					showConfirmButton: false,
+					showCloseButton: true,
+				});
+
+				Toast.fire({
+					icon: 'success',
+					title: "SUCCESS",
+					text: 'Process information successfully!'
+
+				})
+			});
+		</script>
+		<script th:if="${error != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 10000,
+					timerProgressBar: true,
+					showConfirmButton: false,
+					showCloseButton: true,
+				});
+
+				Toast.fire({
+					icon: 'error',
+					title: "The cost is too low",
+					text: 'The daily cost needs to be higher than the current Job Posting cost! Try again at a higher price...'
+				})
+			});
+		</script>
+		<script th:if="${error1 != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 10000,
+					timerProgressBar: true,
+					showConfirmButton: false,
+					showCloseButton: true,
+				});
+
+				Toast.fire({
+					icon: 'error',
+					title: "ERROR",
+					text: 'An error occurred during the Details Update process'
+				})
+			});
+		</script>
+		<script th:if="${error2 != null}">
+			$(document).ready(function () {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					timer: 10000,
+					timerProgressBar: true,
+					showConfirmButton: false,
+					showCloseButton: true,
+				});
+
+				Toast.fire({
+					icon: 'error',
+					title: "ERROR",
+					text: 'The payment level is lower than the old level. You cannot update'
+				})
+			});
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+	</div>
+</body>
+
+
+</html>

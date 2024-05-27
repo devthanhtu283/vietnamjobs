@@ -1,0 +1,83 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{user/layout/userlayout :: userlayout('Company Page', ~{this :: h2}, ~{this :: .contentData})}">
+<head>
+<title>Index</title>
+</head>
+<body>
+
+	<h2>Employers Page</h2>
+
+    <div class="contentData">
+		<section>
+		    <div class="d-flex">
+		        <h3>Discover the top employers</h3>
+		    </div>
+		    <div class="row" style="padding: 20px 0 16px;">
+				<form th:action="@{/home/employer/search}" method="post" style="display: flex; align-items: end;">
+					<div class="col-lg-10">
+			            <input type="text" class="form-control" name="name" placeholder="Input employer name" />
+			        </div>
+			        <div class="col-lg-2 text-end">
+			            <button type="submit" class="btn btn-success" style="font-size: 16px;">
+			                <i data-feather="search" style="margin-right: 5px; width: 16px; height: 16px;"></i>
+			                Search
+			            </button>
+			        </div>
+				</form>
+		    </div>
+		    <div class="row">
+		        <div class="col-lg-12">
+		            <div class="card" style="margin-bottom: 0;">
+		                <div class="card-header d-flex">
+		                    <h3>Outstanding employers</h3>
+		                </div>
+		                <div class="card-body text-center">
+		                    <div class="row" style="margin-bottom: 20px;">
+		                        <div class="col-lg-4" style="padding: 0 5px; margin-bottom: 12px;" th:each="employer : ${employers}">
+		                            <div class="card" style="margin-bottom: 0; border: 1px solid rgb(241, 241, 241); border-radius: 12px;">
+		                                <div class="card-body" style="padding-top: 10px; padding-bottom: 10px;">
+		                                    <div class="row" style="margin-bottom: 8px;">
+		                                        <div class="col-lg-3" style="display: flex; align-items: center; padding: 0px;">
+		                                            <img th:src="@{'/assets/employer/' + ${employer.logo}}" width="75" height="75">
+		                                        </div>
+		                                        <div class="col-lg-9">
+		                                            <div style="margin-bottom: 0; text-align: left; font-size: large; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><b>
+														<th:block th:text="${employer.name}"></th:block>
+													</b></div>
+		                                           
+		                                        </div>
+		                                    </div>
+		                                    <div 
+			                                    class="row" 
+			                                    style="margin-bottom: 8px; border: 1px solid rgb(241, 241, 241); border-radius: 12px;" 
+			                                    th:each="posting : ${@postingService.findByEmployerIdlimit(employer.id, 2)}"
+		                                    >
+		                                        <div class="col-lg-12" style="margin-bottom: 0; text-align: left;">
+													<a th:href="@{'/home/posting/' + ${posting.id}}" style="color: #000;">
+														<b><th:block th:text="${posting.title}"></th:block></b>
+													</a>
+		                                        </div>
+		                                        <div style="text-align: left;">
+		                                            <span class="text-warning">	
+														<th:block th:text="${posting.wageName}"></th:block>
+													</span> | <th:block th:text="${posting.localName}"></th:block>
+		                                        </div>
+		                                    </div>
+		                                    <div class="row" style="margin-bottom: 10px;">
+												<a th:href="@{'/home/employer/' + ${employer.id}}" style="padding: 0;">
+													<button type="button" class="btn btn-outline-warning" style="width: 100%;">View employer</button>
+												</a>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</section>
+    </div>
+	
+</body>
+</html>

@@ -1,0 +1,297 @@
+<html
+  th:replace="~{layout/company :: renderBody('VietnamJobs - Update Company', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Update Company</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper" style="min-height: 2000px">
+      <!-- Breadcrumb -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Update</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/dashboard}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a th:href="@{/employer/company}">Company</a>
+                </li>
+                <li class="breadcrumb-item active">Update</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 col-md-8">
+              <form
+                class="card"
+                enctype="multipart/form-data"
+                method="post"
+                th:action="@{/employer/company/handleUpdate}"
+              >
+                <div class="card-header">
+                  <h5 class="card-title font-weight-bold">Company Details</h5>
+                </div>
+                <div class="card-body">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Logo Company</label>
+                      <div
+                        class="d-flex align-items-center align-content-center"
+                      >
+                        <img
+                          class="p-3 mb-3 bg-white"
+                          height="200"
+                          style="object-fit: contain"
+                          th:src="@{'http://localhost:8087/files/'+ ${updateItem.logo}}"
+                          width="200"
+                          th:if="${updateItem.logo.length() > 0}"
+                        />
+                        <img
+                          class="p-3 mb-3 bg-white"
+                          height="200"
+                          style="object-fit: contain"
+                          th:src="@{/assets/images/no-img.png}"
+                          width="200"
+                          th:if="${updateItem.logo.length()<= 0}"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Company name</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter name..."
+                        required
+                        th:field="${updateItem.name}"
+                        type="text"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label
+                        >Scale
+                        <span class="text-secondary"
+                          >(Quantity employee)</span
+                        ></label
+                      >
+                      <input
+                        class="form-control"
+                        placeholder="Enter name Scale..."
+                        required
+                        th:field="${updateItem.scale}"
+                        type="text"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Address</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter a description..."
+                        required
+                        th:field="${updateItem.address}"
+                        type="text"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Company link</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter link..."
+                        th:field="${updateItem.link}"
+                        type="text"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Company address link:</label>
+                      <input
+                        class="form-control"
+                        placeholder="Enter link..."
+                        th:field="${updateItem.mapLink}"
+                        type="text"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea
+                        class="form-control"
+                        placeholder="Enter a description..."
+                        required
+                        rows="5"
+                        th:field="${updateItem.description}"
+                      ></textarea>
+                    </div>
+                    <div class="form-group">
+                      <input th:field="${updateItem.id}" type="hidden" />
+                      <input th:field="${updateItem.logo}" type="hidden" />
+                      <input th:field="${updateItem.cover}" type="hidden" />
+                      <input
+                        th:field="${updateItem.account.id}"
+                        type="hidden"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer justify-content-between">
+                  <button class="btn btn-success" type="submit">
+                    Save change
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="col-12 col-md-4">
+              <form
+                enctype="multipart/form-data"
+                method="post"
+                th:action="@{/employer/company/uploadLogo}"
+                class="card card-default"
+              >
+                <div class="card-header">
+                  <h5 class="card-title font-weight-bold">Logo Company</h5>
+                </div>
+
+                <div class="card-body">
+                  <div class="form-group">
+                    <img
+                      id="previewImage"
+                      src="#"
+                      alt="Preview Image"
+                      style="max-width: 200px; max-height: 200px; display: none"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="logoFile">Logo Company: </label>
+                    <div class="custom-file">
+                      <input
+                        type="file"
+                        class="custom-file-input"
+                        id="logoFile"
+                        name="file"
+                        accept="image/*"
+                      />
+                      <label class="custom-file-label" for="logoFile"
+                        >Choose logo</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-success" type="submit">
+                    <i class="fas fa-upload mr-2"></i>
+                    Upload
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page specific script -->
+      <!-- bs-custom-file-input -->
+      <script>
+        $(function () {
+          bsCustomFileInput.init();
+        });
+      </script>
+      <script>
+        document
+          .getElementById("logoFile")
+          .addEventListener("change", function (event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                document.getElementById("previewImage").src = e.target.result;
+                document.getElementById("previewImage").style.display = "block";
+              };
+              reader.readAsDataURL(input.files[0]);
+            }
+          });
+      </script>
+      <script th:if="${success != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Process information successfully!",
+          });
+        });
+      </script>
+      <script th:if="${error != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Something went wrong! Try later...",
+          });
+        });
+      </script>
+      <script th:if="${notFound != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "FILE EMPTY",
+            text: "You have not selected an image file",
+          });
+        });
+      </script>
+      <script th:if="${notImage != null}">
+        $(document).ready(function () {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+
+          Toast.fire({
+            icon: "warning",
+            title: "FILE EMPTY",
+            text: "You have not selected an image file",
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,568 @@
+<html
+  th:replace="~{layout/admin :: renderBody('VietnamJobs - Dashboard', ~{this::.content-wrapper})}"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <title>VietnamJobs - Dashboard</title>
+  </head>
+
+  <body>
+    <div class="content-wrapper" style="min-height: 2000px">
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Dashboard</h1>
+            </div>
+            <div class="col-sm-6"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                  <h3 class="card-title">System users</h3>
+                  <a
+                    th:href="${'/admin/account'}"
+                    class="btn btn-tool btn-sm mt-0"
+                  >
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="position-relative mb-4">
+                  <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand">
+                      <div class=""></div>
+                    </div>
+                    <div class="chartjs-size-monitor-shrink">
+                      <div class=""></div>
+                    </div>
+                  </div>
+                  <canvas
+                    id="visitors-chart"
+                    height="200"
+                    style="display: block; width: 608px; height: 200px"
+                    width="608"
+                    class="chartjs-render-monitor"
+                  ></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Top Employers</h3>
+                <div class="card-tools">
+                  <a
+                    th:href="${'/admin/company'}"
+                    class="btn btn-tool btn-sm mt-0"
+                  >
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                  <thead>
+                    <tr>
+                      <th colspan="2">Company</th>
+                      <th>Scale</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="item : ${company}">
+                      <td>
+                        <img
+                          class="img-circle img-size-32 mr-2"
+                          th:src="@{'http://localhost:8087/files/'+ ${item.logo}}"
+                          th:if="${item.logo.length() > 0}"
+                        />
+                        <img
+                          class="img-circle img-size-32 mr-2"
+                          th:src="@{/assets/images/no-img.png}"
+                          th:if="${item.logo.length()<= 0}"
+                        />
+                      </td>
+                      <td th:text="${item.name}"></td>
+                      <td th:text="${item.scale}"></td>
+                      <td>
+                        <a
+                          th:href="${'/admin/company/detail/'+item.id}"
+                          class="text-muted"
+                        >
+                          <i class="fas fa-search"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                  <h3 class="card-title">CV and Jobs</h3>
+                  <a th:href="${'/admin/job'}" class="btn btn-tool btn-sm mt-0">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="position-relative mb-4">
+                  <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand">
+                      <div class=""></div>
+                    </div>
+                    <div class="chartjs-size-monitor-shrink">
+                      <div class=""></div>
+                    </div>
+                  </div>
+                  <canvas
+                    id="jobs-chart"
+                    height="200"
+                    style="display: block; width: 608px; height: 200px"
+                    width="608"
+                    class="chartjs-render-monitor"
+                  ></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Application results rate</h3>
+                <div class="card-tools"></div>
+              </div>
+              <div class="card-body">
+                <div class="position-relative mb-4">
+                  <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand">
+                      <div class=""></div>
+                    </div>
+                    <div class="chartjs-size-monitor-shrink">
+                      <div class=""></div>
+                    </div>
+                  </div>
+                  <canvas
+                    id="application-chart"
+                    height="200"
+                    style="display: block; width: 608px; height: 200px"
+                    width="608"
+                    class="chartjs-render-monitor"
+                  ></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: none">
+          <!--        -->
+          <p th:text="${applyPass}" id="applyPass"></p>
+          <p th:text="${applyFail}" id="applyFail"></p>
+
+          <!-- -->
+          <p th:text="${companyJan}" id="companyJan"></p>
+          <p th:text="${companyFeb}" id="companyFeb"></p>
+          <p th:text="${companyMar}" id="companyMar"></p>
+          <p th:text="${companyApr}" id="companyApr"></p>
+          <p th:text="${companyMay}" id="companyMay"></p>
+          <p th:text="${companyJun}" id="companyJun"></p>
+          <p th:text="${companyJul}" id="companyJul"></p>
+          <p th:text="${companyAug}" id="companyAug"></p>
+          <p th:text="${companySep}" id="companySep"></p>
+          <p th:text="${companyOct}" id="companyOct"></p>
+          <p th:text="${companyNov}" id="companyNov"></p>
+          <p th:text="${companyDec}" id="companyDec"></p>
+
+          <!-- -->
+          <p th:text="${seekerJan}" id="seekerJan"></p>
+          <p th:text="${seekerFeb}" id="seekerFeb"></p>
+          <p th:text="${seekerMar}" id="seekerMar"></p>
+          <p th:text="${seekerApr}" id="seekerApr"></p>
+          <p th:text="${seekerMay}" id="seekerMay"></p>
+          <p th:text="${seekerJun}" id="seekerJun"></p>
+          <p th:text="${seekerJul}" id="seekerJul"></p>
+          <p th:text="${seekerAug}" id="seekerAug"></p>
+          <p th:text="${seekerSep}" id="seekerSep"></p>
+          <p th:text="${seekerOct}" id="seekerOct"></p>
+          <p th:text="${seekerNov}" id="seekerNov"></p>
+          <p th:text="${seekerDec}" id="seekerDec"></p>
+
+          <!-- -->
+          <p th:text="${postJan}" id="postJan"></p>
+          <p th:text="${postFeb}" id="postFeb"></p>
+          <p th:text="${postMar}" id="postMar"></p>
+          <p th:text="${postApr}" id="postApr"></p>
+          <p th:text="${postMay}" id="postMay"></p>
+          <p th:text="${postJun}" id="postJun"></p>
+          <p th:text="${postJul}" id="postJul"></p>
+          <p th:text="${postAug}" id="postAug"></p>
+          <p th:text="${postSep}" id="postSep"></p>
+          <p th:text="${postOct}" id="postOct"></p>
+          <p th:text="${postNov}" id="postNov"></p>
+          <p th:text="${postDec}" id="postDec"></p>
+
+          <!-- -->
+          <p th:text="${applyJan}" id="applyJan"></p>
+          <p th:text="${applyFeb}" id="applyFeb"></p>
+          <p th:text="${applyMar}" id="applyMar"></p>
+          <p th:text="${applyApr}" id="applyApr"></p>
+          <p th:text="${applyMay}" id="applyMay"></p>
+          <p th:text="${applyJun}" id="applyJun"></p>
+          <p th:text="${applyJul}" id="applyJul"></p>
+          <p th:text="${applyAug}" id="applyAug"></p>
+          <p th:text="${applySep}" id="applySep"></p>
+          <p th:text="${applyOct}" id="applyOct"></p>
+          <p th:text="${applyNov}" id="applyNov"></p>
+          <p th:text="${applyDec}" id="applyDec"></p>
+        </div>
+      </div>
+      <script>
+        $(function () {
+          /* ChartJS
+           * -------
+           * Here we will create a few charts using ChartJS
+           */
+
+          // Dữ liệu mẫu: Quantity người dùng theo tháng
+          var companyJan = document.getElementById("companyJan").innerText;
+          var companyFeb = document.getElementById("companyFeb").innerText;
+          var companyMar = document.getElementById("companyMar").innerText;
+          var companyApr = document.getElementById("companyApr").innerText;
+          var companyMay = document.getElementById("companyMay").innerText;
+          var companyJun = document.getElementById("companyJun").innerText;
+          var companyJul = document.getElementById("companyJul").innerText;
+          var companyAug = document.getElementById("companyAug").innerText;
+          var companySep = document.getElementById("companySep").innerText;
+          var companyOct = document.getElementById("companyOct").innerText;
+          var companyNov = document.getElementById("companyNov").innerText;
+          var companyDec = document.getElementById("companyDec").innerText;
+
+          // Chuyển đổi các giá trị thành số nguyên
+          var companyJanCount = parseInt(companyJan);
+          var companyFebCount = parseInt(companyFeb);
+          var companyMarCount = parseInt(companyMar);
+          var companyAprCount = parseInt(companyApr);
+          var companyMayCount = parseInt(companyMay);
+          var companyJunCount = parseInt(companyJun);
+          var companyJulCount = parseInt(companyJul);
+          var companyAugCount = parseInt(companyAug);
+          var companySepCount = parseInt(companySep);
+          var companyOctCount = parseInt(companyOct);
+          var companyNovCount = parseInt(companyNov);
+          var companyDecCount = parseInt(companyDec);
+
+          var seekerJan = document.getElementById("seekerJan").innerText;
+          var seekerFeb = document.getElementById("seekerFeb").innerText;
+          var seekerMar = document.getElementById("seekerMar").innerText;
+          var seekerApr = document.getElementById("seekerApr").innerText;
+          var seekerMay = document.getElementById("seekerMay").innerText;
+          var seekerJun = document.getElementById("seekerJun").innerText;
+          var seekerJul = document.getElementById("seekerJul").innerText;
+          var seekerAug = document.getElementById("seekerAug").innerText;
+          var seekerSep = document.getElementById("seekerSep").innerText;
+          var seekerOct = document.getElementById("seekerOct").innerText;
+          var seekerNov = document.getElementById("seekerNov").innerText;
+          var seekerDec = document.getElementById("seekerDec").innerText;
+
+          // Chuyển đổi các giá trị thành số nguyên
+          var seekerJanCount = parseInt(seekerJan);
+          var seekerFebCount = parseInt(seekerFeb);
+          var seekerMarCount = parseInt(seekerMar);
+          var seekerAprCount = parseInt(seekerApr);
+          var seekerMayCount = parseInt(seekerMay);
+          var seekerJunCount = parseInt(seekerJun);
+          var seekerJulCount = parseInt(seekerJul);
+          var seekerAugCount = parseInt(seekerAug);
+          var seekerSepCount = parseInt(seekerSep);
+          var seekerOctCount = parseInt(seekerOct);
+          var seekerNovCount = parseInt(seekerNov);
+          var seekerDecCount = parseInt(seekerDec);
+
+          var userData = {
+            labels: [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+            ],
+            datasets: [
+              {
+                label: "Candidate",
+                // backgroundColor: "rgba(40, 167, 69,0.4)",
+                borderColor: "rgba(40, 167, 69,1)",
+                borderWidth: 1,
+                data: [
+                  seekerJanCount,
+                  seekerFebCount,
+                  seekerMarCount,
+                  seekerAprCount,
+                  seekerMayCount,
+                  seekerJunCount,
+                  seekerJulCount,
+                  seekerAugCount,
+                  seekerSepCount,
+                  seekerOctCount,
+                  seekerNovCount,
+                  seekerDecCount,
+                ], // Thay thế bằng dữ liệu thực tế người dùng
+              },
+              {
+                label: "Employer",
+                // backgroundColor: "rgba(220, 53, 69, 0.4)",
+                borderColor: "rgba(220, 53, 69, 1)",
+                borderWidth: 1,
+                data: [
+                  companyJanCount,
+                  companyFebCount,
+                  companyMarCount,
+                  companyAprCount,
+                  companyMayCount,
+                  companyJunCount,
+                  companyJulCount,
+                  companyAugCount,
+                  companySepCount,
+                  companyOctCount,
+                  companyNovCount,
+                  companyDecCount,
+                ], // Thay thế bằng dữ liệu thực tế admin
+              },
+            ],
+          };
+
+          // Tùy chọn của biểu đồ
+          var userChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                  },
+                },
+              ],
+            },
+          };
+
+          // Lấy ngữ cảnh của vùng làm việc
+          var userChartCanvas = document
+            .getElementById("visitors-chart")
+            .getContext("2d");
+
+          // Tạo biểu đồ đường
+          new Chart(userChartCanvas, {
+            type: "line",
+            data: userData,
+            options: userChartOptions,
+          });
+
+          ///////
+
+          // Dữ liệu mẫu: Quantity CV và Quantity job theo tháng
+          var postJan = document.getElementById("postJan").innerText;
+          var postFeb = document.getElementById("postFeb").innerText;
+          var postMar = document.getElementById("postMar").innerText;
+          var postApr = document.getElementById("postApr").innerText;
+          var postMay = document.getElementById("postMay").innerText;
+          var postJun = document.getElementById("postJun").innerText;
+          var postJul = document.getElementById("postJul").innerText;
+          var postAug = document.getElementById("postAug").innerText;
+          var postSep = document.getElementById("postSep").innerText;
+          var postOct = document.getElementById("postOct").innerText;
+          var postNov = document.getElementById("postNov").innerText;
+          var postDec = document.getElementById("postDec").innerText;
+
+          // Chuyển đổi các giá trị thành số nguyên
+          var postJanCount = parseInt(postJan);
+          var postFebCount = parseInt(postFeb);
+          var postMarCount = parseInt(postMar);
+          var postAprCount = parseInt(postApr);
+          var postMayCount = parseInt(postMay);
+          var postJunCount = parseInt(postJun);
+          var postJulCount = parseInt(postJul);
+          var postAugCount = parseInt(postAug);
+          var postSepCount = parseInt(postSep);
+          var postOctCount = parseInt(postOct);
+          var postNovCount = parseInt(postNov);
+          var postDecCount = parseInt(postDec);
+
+          var applyJan = document.getElementById("applyJan").innerText;
+          var applyFeb = document.getElementById("applyFeb").innerText;
+          var applyMar = document.getElementById("applyMar").innerText;
+          var applyApr = document.getElementById("applyApr").innerText;
+          var applyMay = document.getElementById("applyMay").innerText;
+          var applyJun = document.getElementById("applyJun").innerText;
+          var applyJul = document.getElementById("applyJul").innerText;
+          var applyAug = document.getElementById("applyAug").innerText;
+          var applySep = document.getElementById("applySep").innerText;
+          var applyOct = document.getElementById("applyOct").innerText;
+          var applyNov = document.getElementById("applyNov").innerText;
+          var applyDec = document.getElementById("applyDec").innerText;
+
+          // Chuyển đổi các giá trị thành số nguyên
+          var applyJanCount = parseInt(applyJan);
+          var applyFebCount = parseInt(applyFeb);
+          var applyMarCount = parseInt(applyMar);
+          var applyAprCount = parseInt(applyApr);
+          var applyMayCount = parseInt(applyMay);
+          var applyJunCount = parseInt(applyJun);
+          var applyJulCount = parseInt(applyJul);
+          var applyAugCount = parseInt(applyAug);
+          var applySepCount = parseInt(applySep);
+          var applyOctCount = parseInt(applyOct);
+          var applyNovCount = parseInt(applyNov);
+          var applyDecCount = parseInt(applyDec);
+
+          var jobsData = {
+            labels: [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+            ],
+            datasets: [
+              {
+                label: "Quantity CV",
+                backgroundColor: "rgba(40, 167, 69,0.4)",
+                borderColor: "rgba(40, 167, 69,1)",
+                borderWidth: 1,
+                data: [
+                  applyJanCount,
+                  applyFebCount,
+                  applyMarCount,
+                  applyAprCount,
+                  applyMayCount,
+                  applyJunCount,
+                  applyJulCount,
+                  applyAugCount,
+                  applySepCount,
+                  applyOctCount,
+                  applyNovCount,
+                  applyDecCount,
+                ], // Thay thế bằng dữ liệu thực tế Quantity CV
+              },
+              {
+                label: "Quantity job",
+                backgroundColor: "rgba(220, 53, 69, 0.4)",
+                borderColor: "rgba(220, 53, 69, 1)",
+                borderWidth: 1,
+                data: [
+                  postJanCount,
+                  postFebCount,
+                  postMarCount,
+                  postAprCount,
+                  postMayCount,
+                  postJunCount,
+                  postJulCount,
+                  postAugCount,
+                  postSepCount,
+                  postOctCount,
+                  postNovCount,
+                  postDecCount,
+                ], // Thay thế bằng dữ liệu thực tế Quantity job
+              },
+            ],
+          };
+
+          // Tùy chọn của biểu đồ
+          var jobsChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                  },
+                },
+              ],
+            },
+          };
+
+          // Lấy ngữ cảnh của vùng làm việc
+          var jobsChartCanvas = document
+            .getElementById("jobs-chart")
+            .getContext("2d");
+
+          // Tạo biểu đồ cột
+          var jobsChart = new Chart(jobsChartCanvas, {
+            type: "bar",
+            data: jobsData,
+            options: jobsChartOptions,
+          });
+
+          /////////////////////////////
+          // Dữ liệu mẫu: tỉ lệ Recruitment thành công và thất bại trong tháng
+
+          // Lấy giá trị từ các thẻ có id là pass và fail
+          var passValue = document.getElementById("applyPass").innerText;
+          var failValue = document.getElementById("applyFail").innerText;
+
+          // Chuyển đổi các giá trị thành số nguyên
+          var passCount = parseInt(passValue);
+          var failCount = parseInt(failValue);
+
+          var applicationData = {
+            labels: ["SUCCESS", "ERROR"],
+            datasets: [
+              {
+                data: [passCount, failCount], // Thay thế bằng dữ liệu thực tế tỉ lệ Recruitment
+                backgroundColor: [
+                  "rgba(40, 167, 69,0.4)",
+                  "rgba(220, 53, 69, 0.4)",
+                ],
+                borderColor: ["rgba(40, 167, 69,1)", "rgba(220, 53, 69, 1)"],
+                borderWidth: 1,
+              },
+            ],
+          };
+
+          // Tùy chọn của biểu đồ
+          var applicationChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+          };
+
+          // Lấy ngữ cảnh của vùng làm việc
+          var applicationChartCanvas = document
+            .getElementById("application-chart")
+            .getContext("2d");
+
+          // Tạo biểu đồ quạt
+          var applicationChart = new Chart(applicationChartCanvas, {
+            type: "doughnut",
+            data: applicationData,
+            options: applicationChartOptions,
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

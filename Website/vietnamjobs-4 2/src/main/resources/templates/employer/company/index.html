@@ -1,0 +1,147 @@
+<html th:replace="~{layout/company :: renderBody('VietnamJobs - Company', ~{this::.content-wrapper})}"
+	  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>VietnamJobs - Company</title>
+</head>
+
+<body>
+<div class="content-wrapper" style="min-height: 2000px;">
+	<!-- Breadcrumb -->
+	<section class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1>Company</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+						<li class="breadcrumb-item"><a th:href="@{/employer/dashboard}">Dashboard</a></li>
+						<li class="breadcrumb-item active">Company</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<th:block th:if="${company != null}">
+
+
+					<div class="col-12">
+						<!-- Default box -->
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title font-weight-bold">Company Details</h3>
+							</div>
+							<div class="card-body">
+								<img class="p-3 mb-3 bg-white" height="200"
+									 style="object-fit: contain;"
+									 th:if="${company.logo.length() > 0}" th:src="@{'http://localhost:8087/files/'+ ${company.logo}}"
+									 width="200">
+								<img class="p-3 mb-3 bg-white" height="200"
+									 style="object-fit: contain;" th:if="${company.logo.length()<= 0}" th:src="@{/assets/images/no-img.png}"
+									 width="200">
+								<h6><strong>Company name: </strong><span th:text="${company.name}"></span></h6>
+
+								<h6><strong>Scale: </strong>
+									<span th:text="${company.scale}"></span></h6>
+								<h6><strong>Followers: </strong>
+									<span th:text="${totalFollow}"></span></h6>
+								<h6><strong>Recruitment Posts: </strong>
+									<span th:text="${totalJob}"></span></h6>
+								<h6><strong>Address: </strong><a
+										target="_blank"
+										th:href="'https://www.google.com/maps/search/?api=1&query='+${company.address}">
+									<span th:text="${company.address}"></span>
+								</a></h6>
+								<h6><strong>Company link: </strong><a
+										target="_blank"
+										th:href="'https://www.google.com/maps/search/?api=1&query='+${company.link}">
+									<span th:text="${company.link}"></span>
+								</a></h6>
+								<h6><strong>Status: </strong>
+									<span class="text-success font-weight-bold" th:if="${company.status == true}">Active</span>
+									<span class="text-danger font-weight-bold" th:if="${company.status == false}">Inactive</span></h6>
+								<h6 class="font-weight-bold">Description:</h6>
+								<span th:text="${company.description}"></span>
+							</div>
+							<!-- /.card-body -->
+							<div class="card-footer">
+								<a class="btn btn-outline-success d-inline-flex align-items-center" th:href="${'/employer/company/update/'+company.id}">
+									<i class="far fa-edit mr-2"></i> Update details</a>
+							</div>
+							<!-- /.card-footer-->
+						</div>
+						<!-- /.card -->
+					</div>
+				</th:block>
+				<th:block th:if="${company == null}">
+					<div class="col-12">
+						<!-- Default box -->
+						<div class="card">
+							<div class="card-body">
+								<div class="d-flex flex-column align-content-center align-items-center p-5">
+									<i class="fas fa-city" style="font-size: 80px; color: #eee;"></i>
+									<h4 class="mt-3 text-center">Company Details</h4>
+									<p class="mt-1 mb-3 text-center">Create Company Details now to proceed with posting
+										recruitment post</p>
+									<a class="btn btn-success" th:href="@{/employer/company/add}">Add Company</a>
+								</div>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+
+					</div>
+
+				</th:block>
+			</div>
+		</div>
+	</section>
+
+	<!-- Page specific script -->
+	<script th:if="${success != null}">
+		$(document).ready(function () {
+			var Toast = Swal.mixin({
+				toast: true,
+				position: 'top-end',
+				timer: 3000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				showCloseButton: true,
+			});
+
+			Toast.fire({
+				icon: 'success',
+				title: "SUCCESS",
+				text: 'Process information successfully!'
+
+			})
+		});
+	</script>
+	<script th:if="${error != null}">
+		$(document).ready(function () {
+			var Toast = Swal.mixin({
+				toast: true,
+				position: 'top-end',
+				timer: 3000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				showCloseButton: true,
+			});
+
+			Toast.fire({
+				icon: 'error',
+				title: "ERROR",
+				text: 'Something went wrong! Try later...'
+			})
+		});
+	</script>
+
+</div>
+</body>
+</html>

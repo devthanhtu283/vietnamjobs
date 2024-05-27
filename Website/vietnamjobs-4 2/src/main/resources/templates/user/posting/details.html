@@ -1,0 +1,238 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{user/layout/userlayout :: userlayout('Job Details', ~{this :: h2}, ~{this :: .contentData})}">
+<head>
+	<title>Index</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/user/css/style.css}">
+</head>
+<body>
+
+	<h2>Job detail</h2>
+
+    <div class="contentData">
+    	<section>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -.2px; line-height: 28px; margin-bottom: 16px;">
+								<th:block th:text="${posting.title}"></th:block>
+							</div>
+                            <div style="display: flex; margin-bottom: 16px;">
+                                <div style="align-items: center; display: flex; gap: 16px; width: 33.3333333333%;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="dollar-sign" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Wage</div>
+                                        <div>
+											<th:block th:text="${posting.wageName}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                                <div style="align-items: center; display: flex; gap: 16px; width: 33.3333333333%;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="map-pin" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Location</div>
+                                        <div>
+											<th:block th:text="${posting.localName}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                                <div style="align-items: center; display: flex; gap: 16px; width: 33.3333333333%;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="activity" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Experience</div>
+                                        <div>
+											<th:block th:text="${posting.expName}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badge bg-light-secondary">
+                                <i data-feather="clock" style="margin-right: 8px;"></i>
+                                Deadline: <th:block th:text="${#dates.format(posting.dealine, 'dd/MM/yyyy')}"></th:block>
+                            </div>
+                            <div style="align-items: center; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px;">
+								<th:block sec:authorize="!isAuthenticated()">
+									<div style="width: calc(100% - 164px);">
+										<a th:href="@{'/account/login'}" style="color: #000;">
+											<button type="button" class="btn btn-success" style="width: 100%;">
+							                    Apply now
+							                </button>
+										</a>
+									</div>
+									<div style="width: 150px;">
+										<a th:href="@{'/account/login'}" style="color: #000;">
+											<button type="button" class="btn btn-outline-success" style="width: 100%;">
+							                    Save this job
+							                </button>
+										</a>
+									</div>
+								</th:block>
+								<th:block sec:authorize="isAuthenticated()">
+									<div style="width: calc(100% - 164px);">
+										<a th:href="@{'/account/login'}" style="color: #000;">
+											<button type="button" class="btn btn-success" style="width: 100%;">
+							                    Apply now
+							                </button>
+										</a>
+									</div>
+									<div style="width: 150px;">
+										<a th:href="@{'/account/login'}" style="color: #000;">
+											<button type="button" class="btn btn-outline-success" style="width: 100%;">
+							                    Save this job
+							                </button>
+										</a>
+									</div>
+								</th:block>
+								<!--  <th:block th:if="${!applied && !save}">
+									<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#applyCV" style="width: calc(100% - 144px);">
+					                    Ứng tuyển ngay
+					                </button>
+	                                <button type="button" class="btn btn-outline-success" style="width: 130px;">Lưu tin</button>
+								</th:block>
+								<th:block th:if="${applied}">
+									<button type="button" class="btn btn-success"style="width: 100%;">
+					                    Đã ứng tuyển
+					                </button>
+								</th:block>
+								<th:block th:if="${save}">
+									<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#applyCV" style="width: calc(100% - 144px);">
+					                    Ứng tuyển ngay
+					                </button>
+	                                <button type="button" class="btn btn-success" style="width: 130px;">Đã lưu</button>
+								</th:block>
+								-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -.2px; line-height: 28px; margin-bottom: 16px;">
+								Job information
+                            </div>
+                            <div style="font-size: 16px; font-style: normal; font-weight: 600; letter-spacing: -.16px; line-height: 24px; margin-top: 16px;">
+								Job description
+							</div>
+                            <div>
+	                        	<th:block th:text="${posting.description}"></th:block>
+                            </div>
+                            <!--<div style="align-items: center; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px;">
+                                <button type="button" class="btn btn-success" style="width: fit-content;" data-bs-toggle="modal" data-bs-target="#applyCV">
+									Ứng tuyển ngay
+								</button>
+                                <button type="button" class="btn btn-outline-success" style="width: fit-content;">Lưu tin</button>
+                            </div>-->
+                            <div style="margin-top: 16px;">Deadline: <th:block th:text="${#dates.format(posting.dealine, 'dd/MM/yyyy')}"></th:block></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="align-items: flex-start; display: flex; gap: 16px;">
+                                <div>
+                                    <img th:src="@{'http://localhost:8087/files/' + ${employer.logo}}" width="75">
+                                </div>
+                                <div style="font-size: 16px; font-style: normal; font-weight: 600; letter-spacing: -.16px; line-height: 24px;">
+                               		<th:block th:text="${employer.name}"></th:block>
+                                </div>
+                            </div>
+                            <div style="align-items: flex-start; display: flex; gap: 16px;">
+                                <div style="display: flex; align-items: center; width: 100px; gap: 8px;">
+                                    <i data-feather="users"></i>
+                                    Scale:
+                                </div>
+                                <div style="width: calc(100% - 116px);">
+                                    <th:block th:text="${employer.scale}"></th:block>
+                                </div>
+                            </div>
+                            <div style="align-items: flex-start; display: flex; gap: 16px;">
+                                <div style="display: flex; align-items: center; width: 100px; gap: 8px;">
+                                    <i data-feather="map-pin"></i>
+                                    Location:
+                                </div>
+                                <div style="width: calc(100% - 116px);">
+                                    <th:block th:text="${employer.address}"></th:block>
+                                </div>
+                            </div>
+                            <div>
+								<a th:href="@{'/home/employer/' + ${employer.id}}" style="align-items: center; display: flex; gap: 10px; justify-content: center; width: 100%; color: #00b14f; margin-top: 16px;">
+									Employer page
+                                	<i data-feather="external-link"></i>
+								</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="font-size: 20px; font-style: normal; font-weight: 700; letter-spacing: -.2px; line-height: 28px; margin-bottom: 16px;">Thông tin chung
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 20px;">
+                                <div style="align-items: center; display: flex; gap: 16px;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="pocket" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Job level</div>
+                                        <div>
+											<th:block th:text="${posting.rankName}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                                <div style="align-items: center; display: flex; gap: 16px;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="activity" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Experience</div>
+                                        <div>
+											<th:block th:text="${posting.expName}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                                <div style="align-items: center; display: flex; gap: 16px;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="users" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Number of recruit</div>
+                                        <div>
+											<th:block th:text="${posting.quantity}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                                <div style="align-items: center; display: flex; gap: 16px;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="briefcase" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Job type</div>
+                                        <div>
+											<th:block th:text="${posting.typeName}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                                <div style="align-items: center; display: flex; gap: 16px;">
+                                    <div style="align-items: center; background: linear-gradient(11deg, #00bf5d, #00907c); border-radius: 30px; display: flex; flex-direction: column; gap: 10px; height: 40px; justify-content: center; padding: 10px; width: 40px;">
+                                        <i data-feather="user" style="width: 24px; height: 24px; flex-shrink: 0; color: #fff;"></i>
+                                    </div>
+                                    <div>
+                                        <div>Gender</div>
+                                        <div>
+											<th:block th:text="${posting.gender}"></th:block>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+</body>
+</html>
