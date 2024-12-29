@@ -4,86 +4,86 @@ VietnamJobs là một nền tảng website và ứng dụng di động hỗ tr�
 
 🚀 Các chức năng chính  
 1. Chức năng cho Người tìm việc (Job Seeker)  
-Tìm kiếm việc làm:  
+- Tìm kiếm việc làm:  
 
 Tìm kiếm việc làm dựa trên vị trí, ngành nghề, mức lương, v.v.  
 
 Lọc kết quả tìm kiếm theo mức lương, loại công việc, kinh nghiệm, v.v.  
 
-Tạo và quản lý hồ sơ cá nhân:  
+- Tạo và quản lý hồ sơ cá nhân:  
 
 Điền thông tin cá nhân, học vấn, kinh nghiệm làm việc, kỹ năng.  
 
 Tải lên CV và thông tin liên quan.  
 
-Xem chi tiết công việc:  
+- Xem chi tiết công việc:  
 
 Xem mô tả công việc, yêu cầu, lợi ích, và thông tin công ty.  
 
-Ứng tuyển trực tuyến:  
+- Ứng tuyển trực tuyến:  
 
 Nộp đơn ứng tuyển và CV qua hệ thống.  
 
-Thông báo và cập nhật:  
+- Thông báo và cập nhật:  
 
 Nhận thông báo về các công việc mới, trạng thái ứng tuyển, và các thông tin liên quan.  
 
-Tương tác với công việc:  
+- Tương tác với công việc:  
 
 Thích, chia sẻ, hoặc lưu các công việc yêu thích.  
 
 2. Chức năng cho Nhà tuyển dụng (Employer)  
-Đăng và quản lý bài đăng tuyển dụng:  
+- Đăng và quản lý bài đăng tuyển dụng:  
 
 Tạo, chỉnh sửa, và xóa các bài đăng tuyển dụng.  
 
-Tìm kiếm và xem hồ sơ ứng viên:  
+- Tìm kiếm và xem hồ sơ ứng viên:  
 
 Tìm kiếm ứng viên và xem CV của họ.  
 
-Quản lý quy trình tuyển dụng:  
+- Quản lý quy trình tuyển dụng:  
 
 Xem danh sách ứng tuyển và quản lý quy trình tuyển dụng.  
 
-Thanh toán:  
+- Thanh toán:  
 
 Quản lý thanh toán cho các dịch vụ cao cấp hoặc bài đăng tuyển dụng.  
 
 3. Chức năng cho Quản trị viên (Admin)  
-Quản lý người dùng:  
+- Quản lý người dùng:  
 
 Xem, chỉnh sửa, và xóa tài khoản người dùng (người tìm việc và nhà tuyển dụng).  
 
-Quản lý bài đăng tuyển dụng:  
+- Quản lý bài đăng tuyển dụng:  
 
 Duyệt, chỉnh sửa, hoặc xóa các bài đăng tuyển dụng.  
 
-Thống kê và báo cáo:  
+- Thống kê và báo cáo:  
 
 Xem báo cáo về lưu lượng truy cập, tương tác người dùng, và hiệu suất bài đăng.  
 
-Quản lý thanh toán:  
+- Quản lý thanh toán:  
 
 Theo dõi thanh toán cho các dịch vụ cao cấp hoặc bài đăng tuyển dụng.  
 
-Hỗ trợ người dùng:  
+- Hỗ trợ người dùng:  
 
 Trả lời các yêu cầu hỗ trợ và phản hồi từ người dùng.  
 
 4. Chức năng khác  
-Đăng nhập/Đăng ký:  
+- Đăng nhập/Đăng ký:  
 
 Người dùng có thể đăng ký tài khoản mới hoặc đăng nhập vào hệ thống.  
 
-Quên mật khẩu:  
+- Quên mật khẩu:  
 
 Khôi phục mật khẩu qua email.  
 
-Cập nhật thông tin cá nhân:  
+- Cập nhật thông tin cá nhân:  
 
 Người dùng có thể cập nhật thông tin cá nhân, thay đổi mật khẩu, và quản lý tùy chọn thông báo.  
 
-Liên hệ và hỗ trợ:  
+- Liên hệ và hỗ trợ:  
 
 Gửi yêu cầu liên hệ hoặc hỗ trợ từ website.  
 
