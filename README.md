@@ -1,6 +1,6 @@
 VietnamJobs - Job Seeker Assistance and Job Listing Platform  
 📌 Giới thiệu   
-VietnamJobs là một nền tảng website và ứng dụng di động hỗ trợ người tìm việc trong việc tìm kiếm cơ hội việc làm, đồng thời cung cấp công cụ cho nhà tuyển dụng để đăng và quản lý các bài đăng tuyển dụng dựa trên các yêu cầu cụ thể.  
+VietnamJobs là một nền tảng website và ứng dụng di động hỗ trợ người tìm việc trong việc tìm kiếm cơ hội việc làm, đồng thời cung cấp công cụ cho nhà tuyển dụng để đăng và quản lý các bài đăng tuyển dụng dựa trên các yêu cầu cụ thể. Công nghệ chính: Java, Flutter.  
 
 🚀 Các chức năng chính  
 1. Chức năng cho Người tìm việc (Job Seeker)  
